@@ -1,59 +1,39 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 3: IMPLEMENTACIÓN DE LA TABLA DE SÍMBOLOS
+ * 👤 ESTUDIANTE 3: IMPLEMENTACIÓN DE LA TABLA DE SÍMBOLOS EN C
  * ==============================================================================
- * 💡 ANALOGÍA CON JAVA:
- *    Este archivo '.c' es como tu clase 'public class SymbolTable implements ISymbolTable'.
- *    En Java usarías:
- *       class Simbolo { String nombre; List<Integer> lineas; Simbolo sig; }
- *    Aquí en C usamos 'struct Simbolo' con punteros y memoria dinámica (malloc/free).
+ * 🎯 RESPONSABILIDAD:
+ *    Almacenar los identificadores encontrados durante el análisis léxico.
  *
- * 🎯 TU MISIÓN PASO A PASO:
- *    [ ] 1. En 'tabla_agregar':
- *           - Buscar si el identificador ya existe en la lista (usando strcmp).
- *           - Si YA EXISTE:
- *             * Mirar su última línea registrada; si no es igual a 'linea', agregarla.
- *           - Si NO EXISTE:
- *             * Crear un nuevo Simbolo con malloc.
- *             * Copiar el nombre obligatoriamente con strdup(nombre) (yytext cambia).
- *             * Guardar la primera línea de aparición.
- *             * Enlazarlo al final de la lista para conservar el orden cronológico.
- *             * Incrementar total_identificadores.
- *
- *    [ ] 2. En 'tabla_imprimir':
- *           - Imprimir el encabezado exacto:
- *             TABLA DE SÍMBOLOS (N identificadores)
- *           - Recorrer la lista en orden (del 1 al N) e imprimir:
- *               1  n                    líneas: 2 4 5 6
- *               2  suma                 líneas: 3 5 8
- *
- *    [ ] 3. En 'tabla_liberar':
- *           - Recorrer y liberar con free() el nombre, las líneas y cada nodo.
- *
- * 🧪 CÓMO PROBAR QUE TU CLASE FUNCIONA:
- *    Compila con 'make' y corre './minilang pruebas/p1_correcto.ml'.
- *    Al final de la salida debe aparecer la tabla con 2 identificadores ('n' y 'suma').
+ * 📋 REQUISITOS OBLIGATORIOS:
+ *    1. Cada identificador aparece UNA sola vez, en el orden de primera aparición.
+ *    2. Registra las líneas donde aparece, sin repetir números de línea.
+ *    3. Copia el nombre obligatoriamente con strdup(nombre) (yytext cambia).
+ *    4. Imprime con el formato exacto requerido por el docente:
+ *         TABLA DE SÍMBOLOS (N identificadores)
+ *           1  nombre               líneas: 2 4 5
+ *    5. Liberar toda la memoria con free() en tabla_liberar().
  * ============================================================================== */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "tabla.h"
 
-/* Estructura equivalente a tu clase interna 'Simbolo' en Java */
+/* Estructura para almacenar cada símbolo de forma dinámica */
 typedef struct Simbolo {
     char *nombre;              /* Cadena propia reservada con strdup() */
     int *lineas;               /* Arreglo dinámico de números de línea */
     int num_lineas;            /* Cantidad actual de líneas registradas */
     int cap_lineas;            /* Capacidad máxima del arreglo antes de realloc */
-    struct Simbolo *sig;       /* Puntero al siguiente símbolo (orden de aparición) */
+    struct Simbolo *sig;       /* Puntero al siguiente símbolo (orden cronológico) */
 } Simbolo;
 
-/* Variables privadas de la "clase" (punteros a inicio y fin de la lista) */
+/* Punteros de control para la lista enlazada */
 static Simbolo *cabeza = NULL;
 static Simbolo *cola = NULL;
 static int total_identificadores = 0;
 
 /* ==============================================================================
- * MÉTODO 1: AGREGAR O ACTUALIZAR SÍMBOLO
+ * FUNCIÓN: tabla_agregar
  * ============================================================================== */
 void tabla_agregar(const char *nombre, int linea) {
     /* 1. Buscar si ya existe en la lista enlazada */
@@ -93,7 +73,7 @@ void tabla_agregar(const char *nombre, int linea) {
 }
 
 /* ==============================================================================
- * MÉTODO 2: IMPRIMIR TABLA FORMATEADA
+ * FUNCIÓN: tabla_imprimir
  * ============================================================================== */
 void tabla_imprimir(void) {
     printf("\nTABLA DE SÍMBOLOS (%d identificadores)\n", total_identificadores);
@@ -111,7 +91,7 @@ void tabla_imprimir(void) {
 }
 
 /* ==============================================================================
- * MÉTODO 3: LIBERAR MEMORIA (DESTRUCTOR)
+ * FUNCIÓN: tabla_liberar
  * ============================================================================== */
 void tabla_liberar(void) {
     Simbolo *actual = cabeza;

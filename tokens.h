@@ -1,14 +1,9 @@
 /* ==============================================================================
  * 👤 ESTUDIANTE 1: MÓDULO DE TOKENS Y CÓDIGOS DE INTERFAZ
  * ==============================================================================
- * 💡 ANALOGÍA CON JAVA:
- *    Este archivo es el equivalente exacto a un 'public enum Token' en Java.
- *    Define las constantes numéricas únicas para cada categoría léxica del lenguaje.
- *
- * 🎯 TU MISIÓN:
- *    1. Garantizar que cada token tenga su código numérico asignado (a partir de 258).
- *    2. En 'minilang.l', en cada una de tus reglas de tokens válidos, debes hacer:
- *          return emitir_token("CLASE_TOKEN", CODIGO_DE_AQUI);
+ * 🎯 RESPONSABILIDAD:
+ *    Define las constantes numéricas únicas para cada clase léxica de MiniLang.
+ *    Estos mismos códigos serán utilizados por Bison para el análisis sintáctico.
  *
  * 📋 CÓDIGOS DE TOKEN OBLIGATORIOS:
  * ============================================================================== */
@@ -17,8 +12,8 @@
 
 enum token {
     T_FIN            = 0,     /* Fin de archivo (EOF) */
-    T_RESERVADA      = 258,   /* Palabras reservadas (entero, si, etc.) */
-    T_IDENTIFICADOR  = 259,   /* Identificadores válidos (<= 31 chars) */
+    T_RESERVADA      = 258,   /* Palabras reservadas (entero, si, mientras, etc.) */
+    T_IDENTIFICADOR  = 259,   /* Identificadores válidos (<= 31 caracteres) */
     T_ENTERO         = 260,   /* Números enteros (ej. 10, 42) */
     T_REAL           = 261,   /* Números reales (ej. 3.14, 2.5e-3, 1E3) */
     T_CADENA         = 262,   /* Cadenas de texto con escapes válidos */

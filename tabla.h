@@ -1,23 +1,22 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 3: INTERFAZ DE LA TABLA DE SÍMBOLOS
+ * 👤 ESTUDIANTE 3: CABECERA DE LA TABLA DE SÍMBOLOS
  * ==============================================================================
- * 💡 ANALOGÍA CON JAVA:
- *    Este archivo '.h' es el equivalente exacto a una 'public interface ISymbolTable'.
- *    Define los métodos públicos que el analizador léxico puede invocar.
- *    La implementación de la lógica interna va en 'tabla.c'.
+ * 🎯 RESPONSABILIDAD:
+ *    Declara las funciones públicas para la gestión de la tabla de símbolos.
+ *    La implementación interna se encuentra en 'tabla.c'.
  *
- * 🎯 MÉTODOS PÚBLICOS DE ESTA INTERFAZ:
+ * 📋 FUNCIONES PÚBLICAS:
  * ============================================================================== */
 #ifndef TABLA_H
 #define TABLA_H
 
-/* Equivalente en Java a: void agregar(String nombre, int linea); */
+/* Agrega un identificador con la línea donde apareció (evitando líneas duplicadas) */
 void tabla_agregar(const char *nombre, int linea);
 
-/* Equivalente en Java a: void imprimir(); */
+/* Imprime la tabla formateada según la especificación obligatoria */
 void tabla_imprimir(void);
 
-/* Equivalente en Java a: void liberarMemoria(); (en C la memoria se libera a mano) */
+/* Libera toda la memoria dinámica asignada para evitar fugas */
 void tabla_liberar(void);
 
 #endif

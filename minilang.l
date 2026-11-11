@@ -1,15 +1,15 @@
 /* ==============================================================================
- * 📄 minilang.l — ANALIZADOR LÉXICO PRINCIPAL (SCANNER)
+ * 📄 minilang.l — ANALIZADOR LÉXICO PRINCIPAL DE MINILANG (FLEX)
  * ==============================================================================
- * 💡 ANALOGÍA CON JAVA:
- *    Este archivo es el equivalente a tu clase 'public class Lexer' o 'Scanner'.
- *    Aquí Flex genera el código en C que lee el código fuente carácter por carácter,
- *    reconoce los patrones y devuelve tokens o reporta errores.
+ * 🎯 DESCRIPCIÓN:
+ *    Especificación léxica para Flex que analiza el código fuente carácter por carácter,
+ *    reconoce los tokens válidos, maneja errores léxicos en modo pánico y gestiona
+ *    la tabla de símbolos.
  *
- * 👥 REPARTO DE RESPONSABILIDADES EN ESTA CLASE:
- *    - 👤 ESTUDIANTE 1: Reconocimiento de Tokens Válidos y retorno de códigos.
- *    - 👤 ESTUDIANTE 2: Detección de Errores Léxicos E1 a E6 en Modo Pánico.
- *    - 👤 ESTUDIANTE 4: Función main() para procesar archivos por consola.
+ * 👥 REPARTO DE RESPONSABILIDADES:
+ *    - 👤 ESTUDIANTE 1: Reconocimiento de Tokens Válidos y códigos de tokens.h.
+ *    - 👤 ESTUDIANTE 2: Detección y recuperación de Errores Léxicos E1 a E6.
+ *    - 👤 ESTUDIANTE 4: Función main() para ejecución por consola.
  * ============================================================================== */
 %{
 #include <stdio.h>
