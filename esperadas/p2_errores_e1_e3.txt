@@ -1,1 +1,62 @@
-# Salida esperada de p2_errores_e1_e3.txt a ser generada y validada por Eduardo\n
+4:1	PALABRA_RESERVADA	entero
+4:8	IDENTIFICADOR	radio
+4:14	ASIGNACION	=
+4:16	ENTERO	5
+4:17	DELIMITADOR	;
+5:1	PALABRA_RESERVADA	real
+5:6	IDENTIFICADOR	area
+5:11	ASIGNACION	=
+5:13	REAL	3.1416
+5:20	OP_ARITMETICO	*
+5:22	IDENTIFICADOR	radio
+5:28	OP_ARITMETICO	*
+5:30	IDENTIFICADOR	radio
+5:35	DELIMITADOR	;
+8:1	PALABRA_RESERVADA	real
+8:6	IDENTIFICADOR	precio
+8:12	ERROR E1	carácter no válido '@'
+8:13	IDENTIFICADOR	base
+8:18	ASIGNACION	=
+8:20	REAL	100.50
+8:26	DELIMITADOR	;
+9:1	PALABRA_RESERVADA	entero
+9:8	IDENTIFICADOR	total
+9:13	ERROR E1	carácter no válido '$'
+9:15	ASIGNACION	=
+9:17	ENTERO	200
+9:20	DELIMITADOR	;
+12:1	PALABRA_RESERVADA	cadena
+12:8	IDENTIFICADOR	saludo
+12:15	ASIGNACION	=
+12:17	ERROR E2	cadena sin cerrar
+13:1	PALABRA_RESERVADA	entero
+13:8	IDENTIFICADOR	x
+13:10	ASIGNACION	=
+13:12	ENTERO	10
+13:14	DELIMITADOR	;
+16:1	PALABRA_RESERVADA	si
+16:4	DELIMITADOR	(
+16:5	IDENTIFICADOR	x
+16:7	OP_RELACIONAL	>
+16:9	ENTERO	0
+16:10	DELIMITADOR	)
+16:12	DELIMITADOR	{
+17:3	PALABRA_RESERVADA	imprimir
+17:11	DELIMITADOR	(
+17:12	CADENA	"x es positivo\n"
+17:29	DELIMITADOR	)
+17:30	DELIMITADOR	;
+18:1	DELIMITADOR	}
+21:1	ERROR E3	comentario de bloque sin cerrar
+22:1	FIN	
+
+TABLA DE SÍMBOLOS (7 identificadores)
+  1  radio                líneas: 4 5
+  2  area                 líneas: 5
+  3  precio               líneas: 8
+  4  base                 líneas: 8
+  5  total                líneas: 9
+  6  saludo               líneas: 12
+  7  x                    líneas: 13 16
+
+tokens: 46  errores: 4

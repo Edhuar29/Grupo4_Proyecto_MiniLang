@@ -1,1 +1,77 @@
-# Salida esperada de p4_casos_limite.txt a ser generada y validada por Eduardo\n
+5:1	PALABRA_RESERVADA	entero
+5:8	IDENTIFICADOR	id_limite_exacto_de_31_caract_1
+5:40	ASIGNACION	=
+5:42	ENTERO	31
+5:44	DELIMITADOR	;
+8:1	PALABRA_RESERVADA	real
+8:6	IDENTIFICADOR	r1
+8:9	ASIGNACION	=
+8:11	REAL	2.5e-3
+8:17	DELIMITADOR	;
+9:1	PALABRA_RESERVADA	real
+9:6	IDENTIFICADOR	r2
+9:9	ASIGNACION	=
+9:11	REAL	1E3
+9:14	DELIMITADOR	;
+10:1	PALABRA_RESERVADA	real
+10:6	IDENTIFICADOR	r3
+10:9	ASIGNACION	=
+10:11	REAL	100.005E+2
+10:21	DELIMITADOR	;
+11:1	PALABRA_RESERVADA	real
+11:6	IDENTIFICADOR	r4
+11:9	ASIGNACION	=
+11:11	REAL	0.001e-10
+11:20	DELIMITADOR	;
+14:1	PALABRA_RESERVADA	cadena
+14:8	IDENTIFICADOR	url
+14:12	ASIGNACION	=
+14:14	CADENA	"http://localhost:8080/api/datos"
+14:47	DELIMITADOR	;
+15:1	PALABRA_RESERVADA	cadena
+15:8	IDENTIFICADOR	bloque
+15:15	ASIGNACION	=
+15:17	CADENA	"/* esto es texto dentro de cadena, no un comentario */"
+15:73	DELIMITADOR	;
+18:1	PALABRA_RESERVADA	cadena
+18:8	IDENTIFICADOR	escapes
+18:16	ASIGNACION	=
+18:18	CADENA	"Tab:\tSalto:\nComilla:\"Barra:\\"
+18:52	DELIMITADOR	;
+21:1	PALABRA_RESERVADA	si
+21:4	DELIMITADOR	(
+21:5	DELIMITADOR	(
+21:6	IDENTIFICADOR	id_limite_exacto_de_31_caract_1
+21:38	OP_RELACIONAL	>=
+21:41	ENTERO	30
+21:43	DELIMITADOR	)
+21:45	OP_LOGICO	&&
+21:48	OP_LOGICO	!
+21:49	DELIMITADOR	(
+21:50	IDENTIFICADOR	r1
+21:53	OP_RELACIONAL	==
+21:56	REAL	0.0
+21:59	DELIMITADOR	)
+21:60	DELIMITADOR	)
+21:62	DELIMITADOR	{
+22:3	PALABRA_RESERVADA	imprimir
+22:11	DELIMITADOR	(
+22:12	CADENA	"Casos limite superados exitosamente\n"
+22:51	DELIMITADOR	,
+22:53	IDENTIFICADOR	escapes
+22:60	DELIMITADOR	)
+22:61	DELIMITADOR	;
+23:1	DELIMITADOR	}
+24:1	FIN	
+
+TABLA DE SÍMBOLOS (8 identificadores)
+  1  id_limite_exacto_de_31_caract_1 líneas: 5 21
+  2  r1                   líneas: 8 21
+  3  r2                   líneas: 9
+  4  r3                   líneas: 10
+  5  r4                   líneas: 11
+  6  url                  líneas: 14
+  7  bloque               líneas: 15
+  8  escapes              líneas: 18 22
+
+tokens: 64  errores: 0

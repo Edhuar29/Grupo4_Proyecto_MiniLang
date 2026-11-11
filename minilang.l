@@ -65,8 +65,9 @@ static void error_numero(void) {
 }
 
 /* Error E6: Secuencia de escape no válida en una cadena (ej. "hola\q")
- * Busca la primera barra '\' con escape inválido y reporta la columna exacta */
-static void error_escape_cadena(void) {
+ * Busca la primera barra '\' con escape inválido y reporta la columna exacta.
+ * Devuelve 1 si encontró un escape inválido, o 0 si todos son válidos. */
+static int verificar_escapes_cadena(void) {
     for (int i = 0; i < yyleng; i++) {
         if (yytext[i] == '\\') {
             char next = yytext[i + 1];
@@ -74,11 +75,12 @@ static void error_escape_cadena(void) {
                 char msg[64];
                 sprintf(msg, "secuencia de escape no válida '\\%c'", next);
                 emitir_error("E6", msg, linea, col + i);
-                return;
+                return 1;
             }
             i++; /* Saltar el carácter escapado válido */
         }
     }
+    return 0;
 }
 %}
 
@@ -146,9 +148,11 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
      * ========================================================================= */
     /* Cadena válida y/o con errores (Melany y Ariel) */
 \"(\\[^\n]|[^"\\\n])*\" { 
-                          /* Si contiene escape no válido, Ariel lo detecta con error_escape_cadena */
-                          /* De lo contrario, Melany emite el token CADENA */
-                          return emitir_token("CADENA", T_CADENA); 
+                          /* Ariel: Detección de error E6 si contiene escape no válido */
+                          if (!verificar_escapes_cadena()) {
+                              /* Si todos los escapes son válidos, Melany emite el token CADENA */
+                              return emitir_token("CADENA", T_CADENA);
+                          }
                         }
 
     /* Error E2 (Ariel): Cadena sin cerrar antes del fin de línea */

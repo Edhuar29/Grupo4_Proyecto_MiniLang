@@ -1,1 +1,62 @@
-# Salida esperada de p3_errores_e4_e6.txt a ser generada y validada por Eduardo\n
+5:1	PALABRA_RESERVADA	entero
+5:8	IDENTIFICADOR	plazo
+5:14	ASIGNACION	=
+5:16	ERROR E4	número mal formado '2dias'
+5:21	DELIMITADOR	;
+6:1	PALABRA_RESERVADA	real
+6:6	IDENTIFICADOR	version
+6:14	ASIGNACION	=
+6:16	ERROR E4	número mal formado '1.2.3'
+6:21	DELIMITADOR	;
+7:1	PALABRA_RESERVADA	real
+7:6	IDENTIFICADOR	constante
+7:16	ASIGNACION	=
+7:18	ERROR E4	número mal formado '7e'
+7:20	DELIMITADOR	;
+10:1	PALABRA_RESERVADA	entero
+10:8	ERROR E5	identificador de más de 31 caracteres
+10:41	ASIGNACION	=
+10:43	ENTERO	50
+10:45	DELIMITADOR	;
+11:1	PALABRA_RESERVADA	real
+11:6	ERROR E5	identificador de más de 31 caracteres
+11:54	ASIGNACION	=
+11:56	REAL	99.9
+11:60	DELIMITADOR	;
+14:1	PALABRA_RESERVADA	entero
+14:8	IDENTIFICADOR	contador
+14:17	ASIGNACION	=
+14:19	ENTERO	1
+14:20	DELIMITADOR	;
+15:1	PALABRA_RESERVADA	real
+15:6	IDENTIFICADOR	tasa
+15:11	ASIGNACION	=
+15:13	REAL	0.15
+15:17	DELIMITADOR	;
+18:1	PALABRA_RESERVADA	cadena
+18:8	IDENTIFICADOR	ruta1
+18:14	ASIGNACION	=
+18:24	ERROR E6	secuencia de escape no válida '\q'
+18:36	DELIMITADOR	;
+19:1	PALABRA_RESERVADA	cadena
+19:8	IDENTIFICADOR	ruta2
+19:14	ASIGNACION	=
+19:22	ERROR E6	secuencia de escape no válida '\x'
+19:36	DELIMITADOR	;
+22:1	PALABRA_RESERVADA	imprimir
+22:9	DELIMITADOR	(
+22:10	CADENA	"fin de prueba p3\n"
+22:30	DELIMITADOR	)
+22:31	DELIMITADOR	;
+23:1	FIN	
+
+TABLA DE SÍMBOLOS (7 identificadores)
+  1  plazo                líneas: 5
+  2  version              líneas: 6
+  3  constante            líneas: 7
+  4  contador             líneas: 14
+  5  tasa                 líneas: 15
+  6  ruta1                líneas: 18
+  7  ruta2                líneas: 19
+
+tokens: 43  errores: 7
