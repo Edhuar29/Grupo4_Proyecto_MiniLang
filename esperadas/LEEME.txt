@@ -1,0 +1,3 @@
+Coloquen aquí la salida esperada de cada programa de pruebas/, con el mismo nombre y extensión .txt
+(por ejemplo, esperadas/p1_correcto.txt). Revísenla a mano: es el resultado que debería dar un analizador correcto.
+El formato completo está en ejemplo/p1_correcto_salida_de_referencia.txt.

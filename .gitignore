@@ -1,0 +1,6 @@
+# Archivos compilados y generados automáticamente (NO SUBIR AL REPO)
+lex.yy.c
+minilang
+*.o
+salidas/
+.DS_Store
