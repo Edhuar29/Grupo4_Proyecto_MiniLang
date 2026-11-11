@@ -1,26 +1,23 @@
-/* tabla.h — Interfaz de la Tabla de Símbolos de identificadores
+/* ==============================================================================
+ * 👤 ESTUDIANTE 3: INTERFAZ DE LA TABLA DE SÍMBOLOS
+ * ==============================================================================
+ * 💡 ANALOGÍA CON JAVA:
+ *    Este archivo '.h' es el equivalente exacto a una 'public interface ISymbolTable'.
+ *    Define los métodos públicos que el analizador léxico puede invocar.
+ *    La implementación de la lógica interna va en 'tabla.c'.
  *
- * RESPONSABLE: Estudiante 3 (Estructura de Datos y Gestión de Memoria en C)
- */
+ * 🎯 MÉTODOS PÚBLICOS DE ESTA INTERFAZ:
+ * ============================================================================== */
 #ifndef TABLA_H
 #define TABLA_H
 
-/* Agrega un identificador a la tabla con la línea donde apareció.
- * Requisitos:
- *  - Si el identificador ya existe, añade la línea a su lista si no está repetida.
- *  - Si es nuevo, reserva memoria con strdup() y lo inserta al final de la lista.
- */
+/* Equivalente en Java a: void agregar(String nombre, int linea); */
 void tabla_agregar(const char *nombre, int linea);
 
-/* Imprime la tabla con el formato exacto requerido:
- *
- * TABLA DE SÍMBOLOS (N identificadores)
- *   1  n                    líneas: 2 4 5 6
- *   2  suma                 líneas: 3 5 8
- */
+/* Equivalente en Java a: void imprimir(); */
 void tabla_imprimir(void);
 
-/* Libera toda la memoria dinámica reservada */
+/* Equivalente en Java a: void liberarMemoria(); (en C la memoria se libera a mano) */
 void tabla_liberar(void);
 
 #endif
