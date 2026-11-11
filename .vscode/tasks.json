@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1. Compilar Proyecto (make)",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "2. Ejecutar Pruebas (make pruebas)",
+            "type": "shell",
+            "command": "make pruebas",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "3. Limpiar Generados (make limpiar)",
+            "type": "shell",
+            "command": "make limpiar",
+            "problemMatcher": []
+        }
+    ]
+}
