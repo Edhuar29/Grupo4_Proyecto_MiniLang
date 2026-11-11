@@ -10,10 +10,10 @@
 
 | Integrante | Rol | Responsabilidad Principal |
 | :--- | :--- | :--- |
-| **[Estudiante 1]** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y control de línea/columna. |
-| **[Estudiante 2]** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`). |
-| **[Estudiante 3]** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados y formateo estricto. |
-| **[Estudiante 4]** | Automatización, QA & Pruebas | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, verificación con `diff` y documentación. |
+| **Melany** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y control de línea/columna. |
+| **Ariel** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`). |
+| **Samuel** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados y formateo estricto. |
+| **Eduardo** | Automatización, QA & Pruebas | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, verificación con `diff` y documentación. |
 
 ---
 

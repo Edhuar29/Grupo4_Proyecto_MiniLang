@@ -1,5 +1,5 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 3: IMPLEMENTACIÓN DE LA TABLA DE SÍMBOLOS EN C
+ * 👤 ESTUDIANTE 3 (Samuel): IMPLEMENTACIÓN DE LA TABLA DE SÍMBOLOS EN C
  * ==============================================================================
  * 🎯 RESPONSABILIDAD:
  *    Almacenar los identificadores encontrados durante el análisis léxico.

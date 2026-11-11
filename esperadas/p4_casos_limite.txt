@@ -1,1 +1,1 @@
-# Salida esperada de p4_casos_limite.txt a ser generada y validada por Estudiante 4\n
+# Salida esperada de p4_casos_limite.txt a ser generada y validada por Eduardo\n

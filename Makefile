@@ -1,6 +1,6 @@
 # Makefile del proyecto de análisis léxico MiniLang - Grupo 4
 #
-# RESPONSABLE: Estudiante 4 (Automatización, QA y Suite de Pruebas)
+# RESPONSABLE: Eduardo (Automatización, QA y Suite de Pruebas)
 #
 # Comandos principales:
 #   make           compila el analizador (./minilang)

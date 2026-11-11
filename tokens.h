@@ -1,5 +1,5 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 1: MÓDULO DE TOKENS Y CÓDIGOS DE INTERFAZ
+ * 👤 ESTUDIANTE 1 (Melany): MÓDULO DE TOKENS Y CÓDIGOS DE INTERFAZ
  * ==============================================================================
  * 🎯 RESPONSABILIDAD:
  *    Define las constantes numéricas únicas para cada clase léxica de MiniLang.

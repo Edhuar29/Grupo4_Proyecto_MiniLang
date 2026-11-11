@@ -1,5 +1,5 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 3: CABECERA DE LA TABLA DE SÍMBOLOS
+ * 👤 ESTUDIANTE 3 (Samuel): CABECERA DE LA TABLA DE SÍMBOLOS
  * ==============================================================================
  * 🎯 RESPONSABILIDAD:
  *    Declara las funciones públicas para la gestión de la tabla de símbolos.

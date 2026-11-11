@@ -7,9 +7,9 @@
  *    la tabla de símbolos.
  *
  * 👥 REPARTO DE RESPONSABILIDADES:
- *    - 👤 ESTUDIANTE 1: Reconocimiento de Tokens Válidos y códigos de tokens.h.
- *    - 👤 ESTUDIANTE 2: Detección y recuperación de Errores Léxicos E1 a E6.
- *    - 👤 ESTUDIANTE 4: Función main() para ejecución por consola.
+ *    - 👤 ESTUDIANTE 1 (Melany): Reconocimiento de Tokens Válidos y códigos de tokens.h.
+ *    - 👤 ESTUDIANTE 2 (Ariel): Detección y recuperación de Errores Léxicos E1 a E6.
+ *    - 👤 ESTUDIANTE 4 (Eduardo): Función main() para ejecución por consola.
  * ============================================================================== */
 %{
 #include <stdio.h>
@@ -30,7 +30,7 @@ int ntokens = 0, nerrores = 0;
         else sig_col++; }
 
 /* ==============================================================================
- * 👤 ESTUDIANTE 1: MÉTODO PARA EMITIR TOKENS VÁLIDOS
+ * 👤 ESTUDIANTE 1 (Melany): MÉTODO PARA EMITIR TOKENS VÁLIDOS
  * Formato requerido: línea:columna⇥CLASE⇥lexema
  * ============================================================================== */
 static int emitir_token(const char *tipo, int codigo) {
@@ -40,7 +40,7 @@ static int emitir_token(const char *tipo, int codigo) {
 }
 
 /* ==============================================================================
- * 👤 ESTUDIANTE 2: MÉTODO PARA EMITIR ERRORES EN MODO PÁNICO
+ * 👤 ESTUDIANTE 2 (Ariel): MÉTODO PARA EMITIR ERRORES EN MODO PÁNICO
  * Formato requerido: línea:columna⇥ERROR Ek⇥mensaje
  * ============================================================================== */
 static void emitir_error(const char *cod, const char *msg, int l, int c) {
@@ -104,7 +104,7 @@ REAL        {DIG}+"."{DIG}+([eE][+-]?{DIG}+)?|{DIG}+[eE][+-]?{DIG}+
 <COMENT>"*/"            { BEGIN(INITIAL); }
 <COMENT>[^*\n]+|"*"|\n  { /* Contenido interno del comentario de bloque */ }
 <COMENT><<EOF>>         { 
-                          /* Error E3 (Estudiante 2): Comentario sin cerrar al llegar al fin de archivo */
+                          /* Error E3 (Ariel): Comentario sin cerrar al llegar al fin de archivo */
                           emitir_error("E3", "comentario de bloque sin cerrar", com_linea, com_col); 
                           BEGIN(INITIAL); 
                         }
@@ -125,7 +125,7 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
                           return emitir_token("PALABRA_RESERVADA", T_RESERVADA); }
 
     /* Identificadores válidos (<= 31 caracteres):
-       OBLIGATORIO: Se registra en la tabla de símbolos de Estudiante 3 */
+       OBLIGATORIO: Se registra en la tabla de símbolos de Samuel */
 {ID}                    { 
                           tabla_agregar(yytext, linea);
                           return emitir_token("IDENTIFICADOR", T_IDENTIFICADOR); 
@@ -144,24 +144,24 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
     /* =========================================================================
      * 👤 SECCIÓN ESTUDIANTE 1 & 2: CADENAS Y SUS ERRORES (E2 y E6)
      * ========================================================================= */
-    /* Cadena válida y/o con errores (Estudiante 1 y Estudiante 2) */
+    /* Cadena válida y/o con errores (Melany y Ariel) */
 \"(\\[^\n]|[^"\\\n])*\" { 
-                          /* Si contiene escape no válido, Estudiante 2 lo detecta con error_escape_cadena */
-                          /* De lo contrario, Estudiante 1 emite el token CADENA */
+                          /* Si contiene escape no válido, Ariel lo detecta con error_escape_cadena */
+                          /* De lo contrario, Melany emite el token CADENA */
                           return emitir_token("CADENA", T_CADENA); 
                         }
 
-    /* Error E2 (Estudiante 2): Cadena sin cerrar antes del fin de línea */
+    /* Error E2 (Ariel): Cadena sin cerrar antes del fin de línea */
 \"(\\[^\n]|[^"\\\n])*     { emitir_error("E2", "cadena sin cerrar", linea, col); }
 
-    /* Operadores relacionales, lógicos, asignación, aritméticos y delimitadores (Estudiante 1) */
+    /* Operadores relacionales, lógicos, asignación, aritméticos y delimitadores (Melany) */
 "=="|"!="|"<="|">="|"<"|">"  { return emitir_token("OP_RELACIONAL", T_OP_RELACIONAL); }
 "&&"|"||"|"!"           { return emitir_token("OP_LOGICO", T_OP_LOGICO); }
 "="                     { return emitir_token("ASIGNACION", T_ASIGNACION); }
 [-+*/%]                 { return emitir_token("OP_ARITMETICO", T_OP_ARITMETICO); }
 [(){}\[\];,]            { return emitir_token("DELIMITADOR", T_DELIMITADOR); }
 
-    /* Error E1 (Estudiante 2): Cualquier otro carácter o símbolo no reconocido */
+    /* Error E1 (Ariel): Cualquier otro carácter o símbolo no reconocido */
 .                       { error_caracter(); }
 
     /* Fin de archivo (EOF) */
@@ -170,7 +170,7 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
 %%
 
 /* ==============================================================================
- * 👤 ESTUDIANTE 4: CLASE DRIVER / MAIN PRINCIPAL
+ * 👤 ESTUDIANTE 4 (Eduardo): CLASE DRIVER / MAIN PRINCIPAL
  * ============================================================================== */
 int main(int argc, char *argv[]) {
     if (argc > 1 && !(yyin = fopen(argv[1], "r"))) {
@@ -184,7 +184,7 @@ int main(int argc, char *argv[]) {
         /* yylex() se encarga de emitir cada token e interactuar con la tabla */
     }
 
-    /* Impresión de la Tabla de Símbolos completada por Estudiante 3 */
+    /* Impresión de la Tabla de Símbolos completada por Samuel */
     tabla_imprimir();
 
     /* Resumen total de tokens y errores */
