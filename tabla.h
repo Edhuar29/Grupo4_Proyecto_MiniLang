@@ -1,11 +1,10 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 3 (Samuel): CABECERA DE LA TABLA DE SÍMBOLOS
+ * 👤 PARTE DE SAMUEL (Estudiante 3): INTERFAZ DE LA TABLA DE SÍMBOLOS
  * ==============================================================================
- * 🎯 RESPONSABILIDAD:
- *    Declara las funciones públicas para la gestión de la tabla de símbolos.
- *    La implementación interna se encuentra en 'tabla.c'.
- *
- * 📋 FUNCIONES PÚBLICAS:
+ * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
+ *    1. Cómo este archivo .h expone las funciones públicas hacia 'minilang.l'.
+ *    2. En qué momento se invoca cada función: tabla_agregar() al leer un ID,
+ *       tabla_imprimir() al terminar el archivo y tabla_liberar() antes de salir.
  * ============================================================================== */
 #ifndef TABLA_H
 #define TABLA_H

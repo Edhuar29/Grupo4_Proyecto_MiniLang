@@ -1,15 +1,15 @@
 /* ==============================================================================
- * 📄 minilang.l — ANALIZADOR LÉXICO PRINCIPAL DE MINILANG (FLEX)
+ * 📄 minilang.l — ANALIZADOR LÉXICO COMPLETO DE MINILANG (FLEX Y C)
  * ==============================================================================
- * 🎯 DESCRIPCIÓN:
- *    Especificación léxica para Flex que analiza el código fuente carácter por carácter,
- *    reconoce los tokens válidos, maneja errores léxicos en modo pánico y gestiona
- *    la tabla de símbolos.
- *
- * 👥 REPARTO DE RESPONSABILIDADES:
- *    - 👤 ESTUDIANTE 1 (Melany): Reconocimiento de Tokens Válidos y códigos de tokens.h.
- *    - 👤 ESTUDIANTE 2 (Ariel): Detección y recuperación de Errores Léxicos E1 a E6.
- *    - 👤 ESTUDIANTE 4 (Eduardo): Función main() para ejecución por consola.
+ * 👥 GUÍA PARA REVISIÓN DE CADA INTEGRANTE (Defensa Semana 8):
+ *    - 👤 MELANY (Estudiante 1): Definiciones regulares, conteo línea/columna,
+ *      reglas de tokens válidos, emitir_token() y retorno de códigos de tokens.h.
+ *    - 👤 ARIEL  (Estudiante 2): Reglas de errores E1 a E6, estado <COMENT>,
+ *      verificar_escapes_cadena(), emitir_error() y recuperación en modo pánico.
+ *    - 👤 SAMUEL (Estudiante 3): Integración con tabla_agregar(), tabla_imprimir()
+ *      y tabla_liberar() (implementadas en tabla.c).
+ *    - 👤 EDUARDO (Estudiante 4): Función main() con bucle yylex() hasta T_FIN,
+ *      Makefile y batería de pruebas en pruebas/.
  * ============================================================================== */
 %{
 #include <stdio.h>
@@ -18,21 +18,21 @@
 #include "tokens.h"
 #include "tabla.h"
 
-int linea = 1, col = 1;              /* Posición donde empieza el lexema actual */
+/* ==============================================================================
+ * 👤 PARTE DE MELANY (Estudiante 1): POSICIÓN (LÍNEA/COLUMNA) Y EMISIÓN DE TOKENS
+ * 📌 REVISAR: YY_USER_ACTION se ejecuta antes de cada regla. Guarda dónde inició
+ *    el lexema actual (linea, col) y avanza sig_col (un tab cuenta como 1 col).
+ * ============================================================================== */
+int linea = 1, col = 1;
 static int sig_linea = 1, sig_col = 1;
-static int com_linea, com_col;        /* Posición donde inició comentario de bloque */
 int ntokens = 0, nerrores = 0;
 
-/* Macro que Flex ejecuta automáticamente antes de cada acción léxica */
 #define YY_USER_ACTION { linea = sig_linea; col = sig_col;               \
     for (int i = 0; i < yyleng; i++)                                     \
         if (yytext[i] == '\n') { sig_linea++; sig_col = 1; }             \
         else sig_col++; }
 
-/* ==============================================================================
- * 👤 ESTUDIANTE 1 (Melany): MÉTODO PARA EMITIR TOKENS VÁLIDOS
- * Formato requerido: línea:columna⇥CLASE⇥lexema
- * ============================================================================== */
+/* Imprime el token en formato 'línea:columna\tCLASE\tlexema' y devuelve su código */
 static int emitir_token(const char *tipo, int codigo) {
     printf("%d:%d\t%s\t%s\n", linea, col, tipo, yytext);
     ntokens++;
@@ -40,15 +40,18 @@ static int emitir_token(const char *tipo, int codigo) {
 }
 
 /* ==============================================================================
- * 👤 ESTUDIANTE 2 (Ariel): MÉTODO PARA EMITIR ERRORES EN MODO PÁNICO
- * Formato requerido: línea:columna⇥ERROR Ek⇥mensaje
+ * 👤 PARTE DE ARIEL (Estudiante 2): MANEJO DE ERRORES LÉXICOS (E1 A E6)
+ * 📌 REVISAR: Cada función reporta el error con su posición exacta y el análisis
+ *    continúa sin detenerse (modo pánico).
  * ============================================================================== */
+static int com_linea, com_col;        /* Línea y columna donde abrió el bloque */
+
 static void emitir_error(const char *cod, const char *msg, int l, int c) {
     printf("%d:%d\tERROR %s\t%s\n", l, c, cod, msg);
     nerrores++;
 }
 
-/* Error E1: Carácter no válido (@, #, $, ?, o bytes extraños) */
+/* Error E1 (Ariel): Carácter o byte no válido */
 static void error_caracter(void) {
     char msg[64];
     unsigned char b = (unsigned char) yytext[0];
@@ -57,16 +60,16 @@ static void error_caracter(void) {
     emitir_error("E1", msg, linea, col);
 }
 
-/* Error E4: Número mal formado (ej. 2dias, 1.2.3, 7e) */
+/* Error E4 (Ariel): Número mal formado (ej. 2dias, 1.2.3, 7e) */
 static void error_numero(void) {
     char msg[160];
     snprintf(msg, sizeof msg, "número mal formado '%.120s'", yytext);
     emitir_error("E4", msg, linea, col);
 }
 
-/* Error E6: Secuencia de escape no válida en una cadena (ej. "hola\q")
- * Busca la primera barra '\' con escape inválido y reporta la columna exacta.
- * Devuelve 1 si encontró un escape inválido, o 0 si todos son válidos. */
+/* Error E6 (Ariel): Secuencia de escape no válida en una cadena (ej. "hola\q")
+ * Recorre yytext buscando el primer '\' seguido de algo distinto a n, t, ", \
+ * y calcula la columna exacta de esa barra invertida (col + i). */
 static int verificar_escapes_cadena(void) {
     for (int i = 0; i < yyleng; i++) {
         if (yytext[i] == '\\') {
@@ -87,7 +90,11 @@ static int verificar_escapes_cadena(void) {
 %option noyywrap nounput noinput
 %x COMENT
 
-/* Definiciones regulares (Expresiones regulares con nombre) */
+/* ==============================================================================
+ * 👤 PARTE DE MELANY Y ARIEL: DEFINICIONES REGULARES CON NOMBRE
+ * 📌 REVISAR: Por qué REAL exige dígitos antes y después del punto (no .5 ni 4.)
+ *    y cómo ID_INVALIDO detecta 32 o más caracteres (1 letra/_ + >=31 más).
+ * ============================================================================== */
 DIG         [0-9]
 LETRA       [A-Za-z_]
 ID          {LETRA}({LETRA}|{DIG})*
@@ -97,104 +104,99 @@ REAL        {DIG}+"."{DIG}+([eE][+-]?{DIG}+)?|{DIG}+[eE][+-]?{DIG}+
 %%
 
     /* =========================================================================
-     * SECCIÓN BASE: ESPACIOS EN BLANCO Y COMENTARIOS
+     * 👤 MELANY (espacios/comentarios válidos) & ARIEL (Error E3 en EOF)
      * ========================================================================= */
-[ \t\r\n]+              { /* Espacios y tabs: se descartan silenciosamente */ }
-"//".*                  { /* Comentario de línea: se descarta hasta el fin de línea */ }
+[ \t\r\n]+              { /* Espacios y tabuladores: se descartan */ }
+"//".*                  { /* Comentario de línea: se descarta hasta \n */ }
 
 "/*"                    { com_linea = linea; com_col = col; BEGIN(COMENT); }
 <COMENT>"*/"            { BEGIN(INITIAL); }
 <COMENT>[^*\n]+|"*"|\n  { /* Contenido interno del comentario de bloque */ }
-<COMENT><<EOF>>         { 
-                          /* Error E3 (Ariel): Comentario sin cerrar al llegar al fin de archivo */
-                          emitir_error("E3", "comentario de bloque sin cerrar", com_linea, com_col); 
-                          BEGIN(INITIAL); 
+<COMENT><<EOF>>         {
+                          /* Error E3 (Ariel): Comentario abierto al llegar al EOF */
+                          emitir_error("E3", "comentario de bloque sin cerrar", com_linea, com_col);
+                          BEGIN(INITIAL);
                         }
 
     /* =========================================================================
-     * 👤 SECCIÓN ESTUDIANTE 2: ERRORES LÉXICOS QUE TIENEN PRECEDENCIA (E5)
+     * 👤 PARTE DE ARIEL (Estudiante 2): ERROR E5 (IDENTIFICADOR > 31 CARACTERES)
+     * 📌 REVISAR: Va ANTES de {ID} por prioridad en caso de empate; se descarta
+     *    y NO se inserta en la tabla de símbolos de Samuel.
      * ========================================================================= */
-    /* E5: Identificador de más de 31 caracteres
-       Va ANTES de {ID} para que Flex aplique esta regla si el identificador es largo.
-       REGLA: Se descarta y NO entra a la tabla de símbolos. */
 {ID_INVALIDO}           { emitir_error("E5", "identificador de más de 31 caracteres", linea, col); }
 
     /* =========================================================================
-     * 👤 SECCIÓN ESTUDIANTE 1: TOKENS VÁLIDOS DE MINILANG
+     * 👤 PARTE DE MELANY (Estudiante 1): TOKENS VÁLIDOS DE MINILANG
+     * 📌 REVISAR: Orden de palabras reservadas ANTES de {ID} para que 'entero' o
+     *    'si' no sean clasificados como IDENTIFICADOR.
      * ========================================================================= */
-    /* Palabras reservadas */
 entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|verdadero|falso {
                           return emitir_token("PALABRA_RESERVADA", T_RESERVADA); }
 
-    /* Identificadores válidos (<= 31 caracteres):
-       OBLIGATORIO: Se registra en la tabla de símbolos de Samuel */
-{ID}                    { 
+{ID}                    {
+                          /* Conexión con el módulo de Samuel (tabla.c) */
                           tabla_agregar(yytext, linea);
-                          return emitir_token("IDENTIFICADOR", T_IDENTIFICADOR); 
+                          return emitir_token("IDENTIFICADOR", T_IDENTIFICADOR);
                         }
 
-    /* Números Reales y Enteros */
 {REAL}                  { return emitir_token("REAL", T_REAL); }
 {DIG}+                  { return emitir_token("ENTERO", T_ENTERO); }
 
     /* =========================================================================
-     * 👤 SECCIÓN ESTUDIANTE 2: ERROR E4 (NÚMERO MAL FORMADO)
+     * 👤 PARTE DE ARIEL (Estudiante 2): ERROR E4 (NÚMERO MAL FORMADO)
+     * 📌 REVISAR: Va DESPUÉS de {REAL} y {DIG}+. Por máximo bocado (longest match),
+     *    '10' coincide con {DIG}+, pero '2dias' o '1.2.3' coinciden aquí por ser más largos.
      * ========================================================================= */
-    /* E4: Un número seguido de letras, dígitos o puntos extras (ej. 2dias, 1.2.3, 7e) */
 ({REAL}|{DIG}+)[A-Za-z0-9_.]+ { error_numero(); }
 
     /* =========================================================================
-     * 👤 SECCIÓN ESTUDIANTE 1 & 2: CADENAS Y SUS ERRORES (E2 y E6)
+     * 👤 PARTE DE MELANY (Cadenas válidas) Y ARIEL (Errores E6 y E2)
+     * 📌 REVISAR: La cadena cerrada pasa por verificar_escapes_cadena() (E6);
+     *    si no tiene escapes inválidos, Melany emite CADENA. Si falta comilla
+     *    de cierre antes del salto de línea, entra a E2.
      * ========================================================================= */
-    /* Cadena válida y/o con errores (Melany y Ariel) */
-\"(\\[^\n]|[^"\\\n])*\" { 
-                          /* Ariel: Detección de error E6 si contiene escape no válido */
+\"(\\[^\n]|[^"\\\n])*\" {
                           if (!verificar_escapes_cadena()) {
-                              /* Si todos los escapes son válidos, Melany emite el token CADENA */
                               return emitir_token("CADENA", T_CADENA);
                           }
                         }
 
-    /* Error E2 (Ariel): Cadena sin cerrar antes del fin de línea */
-\"(\\[^\n]|[^"\\\n])*     { emitir_error("E2", "cadena sin cerrar", linea, col); }
+\"(\\[^\n]|[^"\\\n])*\\?   { emitir_error("E2", "cadena sin cerrar", linea, col); }
 
-    /* Operadores relacionales, lógicos, asignación, aritméticos y delimitadores (Melany) */
+    /* Operadores y delimitadores (Melany) */
 "=="|"!="|"<="|">="|"<"|">"  { return emitir_token("OP_RELACIONAL", T_OP_RELACIONAL); }
-"&&"|"||"|"!"           { return emitir_token("OP_LOGICO", T_OP_LOGICO); }
-"="                     { return emitir_token("ASIGNACION", T_ASIGNACION); }
-[-+*/%]                 { return emitir_token("OP_ARITMETICO", T_OP_ARITMETICO); }
-[(){}\[\];,]            { return emitir_token("DELIMITADOR", T_DELIMITADOR); }
+"&&"|"||"|"!"                { return emitir_token("OP_LOGICO", T_OP_LOGICO); }
+"="                          { return emitir_token("ASIGNACION", T_ASIGNACION); }
+[-+*/%]                      { return emitir_token("OP_ARITMETICO", T_OP_ARITMETICO); }
+[(){}\[\];,]               { return emitir_token("DELIMITADOR", T_DELIMITADOR); }
 
-    /* Error E1 (Ariel): Cualquier otro carácter o símbolo no reconocido */
+    /* Error E1 (Ariel): Regla comodín al final para cualquier carácter no válido */
 .                       { error_caracter(); }
 
-    /* Fin de archivo (EOF) */
+    /* Fin de archivo (Melany / Eduardo) */
 <<EOF>>                 { printf("%d:%d\tFIN\t\n", sig_linea, sig_col); return T_FIN; }
 
 %%
 
 /* ==============================================================================
- * 👤 ESTUDIANTE 4 (Eduardo): CLASE DRIVER / MAIN PRINCIPAL
+ * 👤 PARTE DE EDUARDO (Estudiante 4): DRIVER / FUNCIÓN MAIN PRINCIPAL
+ * 📌 REVISAR: Abre el archivo recibido por argv[1], ejecuta el bucle yylex()
+ *    hasta recibir T_FIN (0), imprime la tabla de símbolos de Samuel, muestra el
+ *    resumen de tokens/errores y libera memoria.
  * ============================================================================== */
 int main(int argc, char *argv[]) {
     if (argc > 1 && !(yyin = fopen(argv[1], "r"))) {
         perror(argv[1]);
         return 1;
     }
-    
-    /* Bucle que invoca a yylex() hasta recibir T_FIN (0) (requerido para Bison en Semana 12) */
+
     int tok;
     while ((tok = yylex()) != T_FIN) {
-        /* yylex() se encarga de emitir cada token e interactuar con la tabla */
+        /* En Semana 12 Bison llamará a yylex() y usará 'tok' */
     }
 
-    /* Impresión de la Tabla de Símbolos completada por Samuel */
     tabla_imprimir();
-
-    /* Resumen total de tokens y errores */
     printf("\ntokens: %d  errores: %d\n", ntokens, nerrores);
-
-    /* Liberación de memoria dinámica */
     tabla_liberar();
 
     return 0;

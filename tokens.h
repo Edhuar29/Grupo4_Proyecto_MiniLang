@@ -1,11 +1,11 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 1 (Melany): MÓDULO DE TOKENS Y CÓDIGOS DE INTERFAZ
+ * 👤 PARTE DE MELANY (Estudiante 1): CÓDIGOS DE TOKEN E INTERFAZ PARA BISON
  * ==============================================================================
- * 🎯 RESPONSABILIDAD:
- *    Define las constantes numéricas únicas para cada clase léxica de MiniLang.
- *    Estos mismos códigos serán utilizados por Bison para el análisis sintáctico.
- *
- * 📋 CÓDIGOS DE TOKEN OBLIGATORIOS:
+ * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
+ *    1. Por qué los tokens comienzan en 258 (0 es EOF/T_FIN y 1..255 se reservan
+ *       para caracteres ASCII individuales si Bison los usa).
+ *    2. Cómo cada regla de 'minilang.l' retorna uno de estos códigos al bucle
+ *       while(yylex() != T_FIN) en main(), preparando la conexión con Bison.
  * ============================================================================== */
 #ifndef TOKENS_H
 #define TOKENS_H

@@ -10,10 +10,10 @@
 
 | Integrante | Rol | Responsabilidad Principal |
 | :--- | :--- | :--- |
-| **Melany** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y control de línea/columna. |
-| **Ariel** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`). |
-| **Samuel** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados y formateo estricto. |
-| **Eduardo** | Automatización, QA & Pruebas | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, verificación con `diff` y documentación. |
+| **Melany [Completar apellidos]** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y control de línea/columna. |
+| **Ariel [Completar apellidos]** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`). |
+| **Samuel [Completar apellidos]** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados y formateo estricto. |
+| **Anasi Nacimba Danny Eduardo** | Automatización, QA & Pruebas | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, función `main()`, verificación con `diff` y documentación. |
 
 ---
 
@@ -61,3 +61,18 @@ make limpiar
    * Ningún error detiene el análisis (`exit`), permitiendo diagnosticar la totalidad de incidencias del código fuente de una sola pasada.
 3. **Gestión de Memoria en la Tabla de Símbolos:**
    * Se utiliza `strdup()` para asegurar que cada identificador conserve su cadena propia antes de que el buffer `yytext` de Flex sea reutilizado por el siguiente lexema.
+
+---
+
+## 🔍 Guía de Revisión por Integrante (Defensa Semana 8)
+
+Cada archivo fuente tiene marcada con el nombre correspondiente la sección exacta que debe dominar y defender cada integrante:
+
+* **Melany (`tokens.h` y `minilang.l` — Tokens Válidos):**
+  * Revisar las definiciones regulares (`DIG`, `LETRA`, `ID`, `REAL`), el macro `YY_USER_ACTION` para `linea`/`col`, la función `emitir_token()` y el orden de palabras reservadas antes de `{ID}`.
+* **Ariel (`minilang.l` — Errores E1 a E6 y Modo Pánico):**
+  * Revisar la condición de inicio `%x COMENT` (E3), `{ID_INVALIDO}` antes de `{ID}` (E5), la regla de número mal formado (E4), `verificar_escapes_cadena()` con `col + i` (E6), cadena sin cerrar (E2) y `error_caracter()` (E1).
+* **Samuel (`tabla.h` y `tabla.c` — Tabla de Símbolos):**
+  * Revisar la estructura `struct Simbolo`, la lista enlazada con `cabeza`/`cola` (orden cronológico), la copia con `strdup()`, la inserción sin líneas repetidas (`realloc`) y `tabla_liberar()`.
+* **Eduardo (`Makefile`, `minilang.l` `main()`, `pruebas/` y `esperadas/`):**
+  * Revisar el bucle `while ((tok = yylex()) != T_FIN)` en `main()`, las reglas de compilación del `Makefile`, los 4 programas en `pruebas/` y la verificación automatizada con `make pruebas`.

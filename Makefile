@@ -1,11 +1,14 @@
-# Makefile del proyecto de análisis léxico MiniLang - Grupo 4
+# ==============================================================================
+# 👤 PARTE DE EDUARDO (Estudiante 4): AUTOMATIZACIÓN Y SUITE DE PRUEBAS
+# ==============================================================================
+# 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
+#    - Cómo dependen los objetivos: minilang -> lex.yy.c -> minilang.l.
+#    - Cómo 'make pruebas' genera salidas/ y verifica con 'diff -u' contra esperadas/.
 #
-# RESPONSABLE: Eduardo (Automatización, QA y Suite de Pruebas)
-#
-# Comandos principales:
+# Comandos:
 #   make           compila el analizador (./minilang)
 #   make pruebas   analiza cada programa de pruebas/ y compara con esperadas/
-#   make limpiar   borra los archivos generados
+#   make limpiar   borra los archivos generados (minilang, lex.yy.c, salidas/)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Wno-sign-compare

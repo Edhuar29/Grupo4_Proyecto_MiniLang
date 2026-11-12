@@ -1,46 +1,44 @@
 /* ==============================================================================
- * 👤 ESTUDIANTE 3 (Samuel): IMPLEMENTACIÓN DE LA TABLA DE SÍMBOLOS EN C
+ * 👤 PARTE DE SAMUEL (Estudiante 3): TABLA DE SÍMBOLOS EN LENGUAJE C
  * ==============================================================================
- * 🎯 RESPONSABILIDAD:
- *    Almacenar los identificadores encontrados durante el análisis léxico.
- *
- * 📋 REQUISITOS OBLIGATORIOS:
- *    1. Cada identificador aparece UNA sola vez, en el orden de primera aparición.
- *    2. Registra las líneas donde aparece, sin repetir números de línea.
- *    3. Copia el nombre obligatoriamente con strdup(nombre) (yytext cambia).
- *    4. Imprime con el formato exacto requerido por el docente:
- *         TABLA DE SÍMBOLOS (N identificadores)
- *           1  nombre               líneas: 2 4 5
- *    5. Liberar toda la memoria con free() en tabla_liberar().
+ * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
+ *    1. Estructura 'Simbolo': lista enlazada con punteros 'cabeza' y 'cola' para
+ *       mantener el orden exacto de primera aparición de cada identificador.
+ *    2. Por qué es OBLIGATORIO usar strdup(nombre): porque el puntero 'yytext'
+ *       de Flex es un buffer interno que se sobrescribe con el siguiente lexema.
+ *    3. Cómo se evitan líneas duplicadas: comparando si 'linea' ya es igual a
+ *       la última línea almacenada en el arreglo dinámico 'lineas' (y usando
+ *       realloc si supera 'cap_lineas').
+ *    4. Gestión de memoria: liberación ordenada con free() en tabla_liberar().
  * ============================================================================== */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "tabla.h"
 
-/* Estructura para almacenar cada símbolo de forma dinámica */
+/* Nodo de la lista enlazada de símbolos */
 typedef struct Simbolo {
-    char *nombre;              /* Cadena propia reservada con strdup() */
+    char *nombre;              /* Copia independiente del lexema (con strdup) */
     int *lineas;               /* Arreglo dinámico de números de línea */
     int num_lineas;            /* Cantidad actual de líneas registradas */
-    int cap_lineas;            /* Capacidad máxima del arreglo antes de realloc */
-    struct Simbolo *sig;       /* Puntero al siguiente símbolo (orden cronológico) */
+    int cap_lineas;            /* Capacidad actual antes de usar realloc */
+    struct Simbolo *sig;       /* Siguiente símbolo en orden cronológico */
 } Simbolo;
 
-/* Punteros de control para la lista enlazada */
+/* Punteros privados para mantener orden O(1) al final de la lista */
 static Simbolo *cabeza = NULL;
 static Simbolo *cola = NULL;
 static int total_identificadores = 0;
 
 /* ==============================================================================
- * FUNCIÓN: tabla_agregar
+ * 👤 SAMUEL — FUNCIÓN 1: tabla_agregar
  * ============================================================================== */
 void tabla_agregar(const char *nombre, int linea) {
-    /* 1. Buscar si ya existe en la lista enlazada */
+    /* 1. Buscar si el identificador ya fue registrado previamente */
     Simbolo *actual = cabeza;
     while (actual != NULL) {
         if (strcmp(actual->nombre, nombre) == 0) {
-            /* Ya existe: agregar la línea solo si es distinta a la última guardada */
+            /* Ya existe: agregar la línea solo si no se ha registrado aún en esta línea */
             if (actual->num_lineas == 0 || actual->lineas[actual->num_lineas - 1] != linea) {
                 if (actual->num_lineas >= actual->cap_lineas) {
                     actual->cap_lineas *= 2;
@@ -53,7 +51,7 @@ void tabla_agregar(const char *nombre, int linea) {
         actual = actual->sig;
     }
 
-    /* 2. No existe: crear un nuevo nodo al final */
+    /* 2. Es un identificador nuevo: reservar nodo y copiar el lexema con strdup */
     Simbolo *nuevo = (Simbolo *) malloc(sizeof(Simbolo));
     nuevo->nombre = strdup(nombre); /* OBLIGATORIO: strdup */
     nuevo->cap_lineas = 4;
@@ -73,14 +71,14 @@ void tabla_agregar(const char *nombre, int linea) {
 }
 
 /* ==============================================================================
- * FUNCIÓN: tabla_imprimir
+ * 👤 SAMUEL — FUNCIÓN 2: tabla_imprimir
  * ============================================================================== */
 void tabla_imprimir(void) {
     printf("\nTABLA DE SÍMBOLOS (%d identificadores)\n", total_identificadores);
     Simbolo *actual = cabeza;
     int indice = 1;
     while (actual != NULL) {
-        /* Formato estricto: dos espacios, índice, dos espacios, nombre alineado a 20 chars */
+        /* Formato exacto de la consigna: 2 espacios, índice, 2 espacios, nombre %-20s */
         printf("  %d  %-20s líneas:", indice++, actual->nombre);
         for (int j = 0; j < actual->num_lineas; j++) {
             printf(" %d", actual->lineas[j]);
@@ -91,7 +89,7 @@ void tabla_imprimir(void) {
 }
 
 /* ==============================================================================
- * FUNCIÓN: tabla_liberar
+ * 👤 SAMUEL — FUNCIÓN 3: tabla_liberar
  * ============================================================================== */
 void tabla_liberar(void) {
     Simbolo *actual = cabeza;
