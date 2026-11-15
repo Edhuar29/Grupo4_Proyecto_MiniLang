@@ -14,14 +14,14 @@
 
 ---
 
-## 👥 Integrantes y Responsabilidades
+## 👥 Integrantes, Turnos y Responsabilidades (Defensa Semana 8)
 
-| Integrante | Rol | Responsabilidad Principal |
-| :--- | :--- | :--- |
-| **Melany [Completar apellidos]** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y control de línea/columna. |
-| **Ariel [Completar apellidos]** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`). |
-| **Samuel [Completar apellidos]** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados y formateo estricto. |
-| **Anasi Nacimba Danny Eduardo** | Automatización, QA & Pruebas | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, función `main()`, verificación con `diff` y documentación. |
+| Turno / Diapositivas | Integrante | Rol | Responsabilidad Principal en Código |
+| :---: | :--- | :--- | :--- |
+| **Turno 1**<br>*(Diapos 1 a 3)* | **Anasi Nacimba Danny Eduardo** | Automatización, QA & Driver | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, función `main()`, verificación con `diff` y documentación. |
+| **Turno 2**<br>*(Diapos 4 a 6)* | **Melany [Completar apellidos]** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y macro `YY_USER_ACTION`. |
+| **Turno 3**<br>*(Diapos 7 a 9)* | **Ariel [Completar apellidos]** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`), y estado `%x COMENT`. |
+| **Turno 4**<br>*(Diapos 10 a 12)* | **Samuel [Completar apellidos]** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados (`realloc`) y liberación total con `free()`. |
 
 ---
 
@@ -72,15 +72,15 @@ make limpiar
 
 ---
 
-## 🔍 Guía de Revisión por Integrante (Defensa Semana 8)
+## 🔍 Guía de Revisión por Integrante y Turno de Defensa (12 Diapositivas)
 
-Cada archivo fuente tiene marcada con el nombre correspondiente la sección exacta que debe dominar y defender cada integrante:
+Cada archivo fuente tiene marcada con el nombre correspondiente la sección exacta que debe dominar y defender cada integrante según su orden en la presentación:
 
-* **Melany (`tokens.h` y `minilang.l` — Tokens Válidos):**
-  * Revisar las definiciones regulares (`DIG`, `LETRA`, `ID`, `REAL`), el macro `YY_USER_ACTION` para `linea`/`col`, la función `emitir_token()` y el orden de palabras reservadas antes de `{ID}`.
-* **Ariel (`minilang.l` — Errores E1 a E6 y Modo Pánico):**
+* **1. Eduardo (Turno 1 / Diapositivas 1 a 3 en Canva — `Makefile`, `minilang.l` `main()`, `pruebas/` y `esperadas/`):**
+  * Revisar el bucle `while ((tok = yylex()) != T_FIN)` en `main()`, las reglas de compilación del `Makefile`, los 4 programas en `pruebas/` y la verificación automatizada con `make pruebas` (0 diferencias).
+* **2. Melany (Turno 2 / Diapositivas 4 a 6 en Canva — `tokens.h` y `minilang.l` Tokens Válidos):**
+  * Revisar las definiciones regulares (`DIG`, `LETRA`, `ID`, `REAL`), el macro `YY_USER_ACTION` para `linea`/`col`, la función `emitir_token()` y el orden de palabras reservadas antes de `{ID}` (*longest match*).
+* **3. Ariel (Turno 3 / Diapositivas 7 a 9 en Canva — `minilang.l` Errores E1 a E6 y Modo Pánico):**
   * Revisar la condición de inicio `%x COMENT` (E3), `{ID_INVALIDO}` antes de `{ID}` (E5), la regla de número mal formado (E4), `verificar_escapes_cadena()` con `col + i` (E6), cadena sin cerrar (E2) y `error_caracter()` (E1).
-* **Samuel (`tabla.h` y `tabla.c` — Tabla de Símbolos):**
-  * Revisar la estructura `struct Simbolo`, la lista enlazada con `cabeza`/`cola` (orden cronológico), la copia con `strdup()`, la inserción sin líneas repetidas (`realloc`) y `tabla_liberar()`.
-* **Eduardo (`Makefile`, `minilang.l` `main()`, `pruebas/` y `esperadas/`):**
-  * Revisar el bucle `while ((tok = yylex()) != T_FIN)` en `main()`, las reglas de compilación del `Makefile`, los 4 programas en `pruebas/` y la verificación automatizada con `make pruebas`.
+* **4. Samuel (Turno 4 / Diapositivas 10 a 12 en Canva — `tabla.h` y `tabla.c` Tabla de Símbolos):**
+  * Revisar la estructura `struct Simbolo`, la lista enlazada con `cabeza`/`cola` (orden cronológico), la copia con `strdup()`, la inserción sin líneas repetidas (`realloc`), `tabla_liberar()` con `free()` y la interfaz hacia Bison.

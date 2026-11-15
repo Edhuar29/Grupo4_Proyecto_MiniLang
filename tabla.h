@@ -1,5 +1,5 @@
 /* ==============================================================================
- * 👤 PARTE DE SAMUEL (Estudiante 3): INTERFAZ DE LA TABLA DE SÍMBOLOS
+ * 👤 PARTE DE SAMUEL (Turno 4 / Diapos 10 a 12 en Canva): TABLA DE SÍMBOLOS
  * ==============================================================================
  * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
  *    1. Cómo este archivo .h expone las funciones públicas hacia 'minilang.l'.

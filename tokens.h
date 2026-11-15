@@ -1,5 +1,5 @@
 /* ==============================================================================
- * 👤 PARTE DE MELANY (Estudiante 1): CÓDIGOS DE TOKEN E INTERFAZ PARA BISON
+ * 👤 PARTE DE MELANY (Turno 2 / Diapos 4 a 6 en Canva): CÓDIGOS DE TOKEN E INTERFAZ
  * ==============================================================================
  * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
  *    1. Por qué los tokens comienzan en 258 (0 es EOF/T_FIN y 1..255 se reservan

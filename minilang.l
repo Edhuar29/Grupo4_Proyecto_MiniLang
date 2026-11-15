@@ -1,15 +1,15 @@
 /* ==============================================================================
  * 📄 minilang.l — ANALIZADOR LÉXICO COMPLETO DE MINILANG (FLEX Y C)
  * ==============================================================================
- * 👥 GUÍA PARA REVISIÓN DE CADA INTEGRANTE (Defensa Semana 8):
- *    - 👤 MELANY (Estudiante 1): Definiciones regulares, conteo línea/columna,
- *      reglas de tokens válidos, emitir_token() y retorno de códigos de tokens.h.
- *    - 👤 ARIEL  (Estudiante 2): Reglas de errores E1 a E6, estado <COMENT>,
- *      verificar_escapes_cadena(), emitir_error() y recuperación en modo pánico.
- *    - 👤 SAMUEL (Estudiante 3): Integración con tabla_agregar(), tabla_imprimir()
- *      y tabla_liberar() (implementadas en tabla.c).
- *    - 👤 EDUARDO (Estudiante 4): Función main() con bucle yylex() hasta T_FIN,
- *      Makefile y batería de pruebas en pruebas/.
+ * 👥 GUÍA DE EXPOSICIÓN Y DEFENSA POR INTEGRANTE (12 Diapositivas en Canva):
+ *    - 👤 EDUARDO (Turno 1 / Diapos 1 a 3): Apertura, Pipeline del compilador,
+ *      función main() con bucle yylex() hasta T_FIN, Makefile y pruebas/.
+ *    - 👤 MELANY  (Turno 2 / Diapos 4 a 6): Definiciones regulares, tokens válidos,
+ *      macro YY_USER_ACTION (línea/columna), ambigüedad y longest match.
+ *    - 👤 ARIEL   (Turno 3 / Diapos 7 a 9): Taxonomía de errores E1 a E6, estado
+ *      exclusivo <COMENT>, verificar_escapes_cadena() y modo pánico.
+ *    - 👤 SAMUEL  (Turno 4 / Diapos 10 a 12): Integración con tabla_agregar(),
+ *      tabla_imprimir(), tabla_liberar(), memoria strdup/free y Bison.
  * ============================================================================== */
 %{
 #include <stdio.h>
@@ -19,7 +19,7 @@
 #include "tabla.h"
 
 /* ==============================================================================
- * 👤 PARTE DE MELANY (Estudiante 1): POSICIÓN (LÍNEA/COLUMNA) Y EMISIÓN DE TOKENS
+ * 👤 PARTE DE MELANY (Turno 2 / Diapos 4 a 6 en Canva): POSICIÓN Y EMISIÓN DE TOKENS
  * 📌 REVISAR: YY_USER_ACTION se ejecuta antes de cada regla. Guarda dónde inició
  *    el lexema actual (linea, col) y avanza sig_col (un tab cuenta como 1 col).
  * ============================================================================== */
@@ -40,7 +40,7 @@ static int emitir_token(const char *tipo, int codigo) {
 }
 
 /* ==============================================================================
- * 👤 PARTE DE ARIEL (Estudiante 2): MANEJO DE ERRORES LÉXICOS (E1 A E6)
+ * 👤 PARTE DE ARIEL (Turno 3 / Diapos 7 a 9 en Canva): MANEJO DE ERRORES LÉXICOS (E1 A E6)
  * 📌 REVISAR: Cada función reporta el error con su posición exacta y el análisis
  *    continúa sin detenerse (modo pánico).
  * ============================================================================== */
@@ -179,7 +179,7 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
 %%
 
 /* ==============================================================================
- * 👤 PARTE DE EDUARDO (Estudiante 4): DRIVER / FUNCIÓN MAIN PRINCIPAL
+ * 👤 PARTE DE EDUARDO (Turno 1 / Diapos 1 a 3 en Canva): DRIVER / FUNCIÓN MAIN
  * 📌 REVISAR: Abre el archivo recibido por argv[1], ejecuta el bucle yylex()
  *    hasta recibir T_FIN (0), imprime la tabla de símbolos de Samuel, muestra el
  *    resumen de tokens/errores y libera memoria.

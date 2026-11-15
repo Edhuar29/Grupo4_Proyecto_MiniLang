@@ -1,5 +1,5 @@
 # ==============================================================================
-# 👤 PARTE DE EDUARDO (Estudiante 4): AUTOMATIZACIÓN Y SUITE DE PRUEBAS
+# 👤 PARTE DE EDUARDO (Turno 1 / Diapos 1 a 3 en Canva): AUTOMATIZACIÓN Y PRUEBAS
 # ==============================================================================
 # 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
 #    - Cómo dependen los objetivos: minilang -> lex.yy.c -> minilang.l.

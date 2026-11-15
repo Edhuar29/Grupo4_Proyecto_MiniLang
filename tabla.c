@@ -1,5 +1,5 @@
 /* ==============================================================================
- * 👤 PARTE DE SAMUEL (Estudiante 3): TABLA DE SÍMBOLOS EN LENGUAJE C
+ * 👤 PARTE DE SAMUEL (Turno 4 / Diapos 10 a 12 en Canva): TABLA DE SÍMBOLOS EN C
  * ==============================================================================
  * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
  *    1. Estructura 'Simbolo': lista enlazada con punteros 'cabeza' y 'cola' para
