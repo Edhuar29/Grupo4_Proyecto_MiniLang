@@ -6,6 +6,14 @@
 
 ---
 
+## 🔗 Recursos y Materiales de Apoyo del Proyecto
+
+* 📊 **Presentación en Canva (12 Diapositivas - 3 por estudiante):** [Ver Diapositivas de Defensa](https://www.canva.com/design/DAHa88W7uzI/edit)
+* 📜 **Guión Oficial de Exposición (Google Docs):** [Leer Guión Palabra por Palabra](https://docs.google.com/document/d/1Y3xt003-X5NvTvQZwul5GDhisgmIkkZtzn-hjBSknDw/edit)
+* 📝 **Informe Oficial del Proyecto (Google Docs):** [Ver Informe Grupo 4](https://docs.google.com/document/d/1MwygHaZj3BRnsjDs1bmyOIKT-T-j6l0fYGmKCIdbWRM/edit)
+
+---
+
 ## 👥 Integrantes y Responsabilidades
 
 | Integrante | Rol | Responsabilidad Principal |
