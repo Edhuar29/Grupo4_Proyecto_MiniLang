@@ -1,12 +1,3 @@
-/* ==============================================================================
- * 👤 PARTE DE MELANY (Turno 2 / Diapos 4 a 6 en Canva): CÓDIGOS DE TOKEN E INTERFAZ
- * ==============================================================================
- * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
- *    1. Por qué los tokens comienzan en 258 (0 es EOF/T_FIN y 1..255 se reservan
- *       para caracteres ASCII individuales si Bison los usa).
- *    2. Cómo cada regla de 'minilang.l' retorna uno de estos códigos al bucle
- *       while(yylex() != T_FIN) en main(), preparando la conexión con Bison.
- * ============================================================================== */
 #ifndef TOKENS_H
 #define TOKENS_H
 
