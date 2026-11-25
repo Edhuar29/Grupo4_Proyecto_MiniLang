@@ -1,10 +1,3 @@
-# ==============================================================================
-# 👤 PARTE DE EDUARDO (Turno 1 / Diapos 1 a 3 en Canva): AUTOMATIZACIÓN Y PRUEBAS
-# ==============================================================================
-# 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
-#    - Cómo dependen los objetivos: minilang -> lex.yy.c -> minilang.l.
-#    - Cómo 'make pruebas' genera salidas/ y verifica con 'diff -u' contra esperadas/.
-#
 # Comandos:
 #   make           compila el analizador (./minilang)
 #   make pruebas   analiza cada programa de pruebas/ y compara con esperadas/
