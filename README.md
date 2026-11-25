@@ -18,10 +18,10 @@
 
 | Turno / Diapositivas | Integrante | Rol | Responsabilidad Principal en Código |
 | :---: | :--- | :--- | :--- |
-| **Turno 1**<br>*(Diapos 1 a 3)* | **Anasi Nacimba Danny Eduardo** | Automatización, QA & Driver | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, función `main()`, verificación con `diff` y documentación. |
-| **Turno 2**<br>*(Diapos 4 a 6)* | **Melany [Completar apellidos]** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y macro `YY_USER_ACTION`. |
-| **Turno 3**<br>*(Diapos 7 a 9)* | **Ariel [Completar apellidos]** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`), y estado `%x COMENT`. |
-| **Turno 4**<br>*(Diapos 10 a 12)* | **Samuel [Completar apellidos]** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados (`realloc`) y liberación total con `free()`. |
+| **Turno 1**<br>*(Diapos 1 a 3)* | **Danny Anasi** | Automatización, QA & Driver | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, función `main()`, verificación con `diff` y documentación. |
+| **Turno 2**<br>*(Diapos 4 a 6)* | **Melany Taco** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y macro `YY_USER_ACTION`. |
+| **Turno 3**<br>*(Diapos 7 a 9)* | **Ariel Soria** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`), y estado `%x COMENT`. |
+| **Turno 4**<br>*(Diapos 10 a 12)* | **Samuel Robayo** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados (`realloc`) y liberación total con `free()`. |
 
 ---
 
