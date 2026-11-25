@@ -38,8 +38,8 @@ static void emitir_error(const char *cod, const char *msg, int l, int c) {
 static void error_caracter(void) {
     char msg[64];
     unsigned char b = (unsigned char) yytext[0];
-    if (b >= 32 && b < 127) sprintf(msg, "carácter no válido '%c'", b);
-    else sprintf(msg, "byte no válido 0x%02X", b);
+    if (b >= 32 && b < 127) snprintf(msg, sizeof msg, "carácter no válido '%c'", b);
+    else snprintf(msg, sizeof msg, "byte no válido 0x%02X", b);
     emitir_error("E1", msg, linea, col);
 }
 
@@ -61,7 +61,7 @@ static int verificar_escapes_cadena(void) {
             char next = yytext[i + 1];
             if (next != 'n' && next != 't' && next != '"' && next != '\\') {
                 char msg[64];
-                sprintf(msg, "secuencia de escape no válida '\\%c'", next);
+                snprintf(msg, sizeof msg, "secuencia de escape no válida '\\%c'", next);
                 emitir_error("E6", msg, linea, col + i);
                 return 1;
             }

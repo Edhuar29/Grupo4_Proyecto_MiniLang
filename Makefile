@@ -6,6 +6,8 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Wno-sign-compare
 
+.PHONY: pruebas limpiar clean
+
 minilang: lex.yy.c tabla.c tabla.h tokens.h
 	$(CC) $(CFLAGS) -o minilang lex.yy.c tabla.c
 
