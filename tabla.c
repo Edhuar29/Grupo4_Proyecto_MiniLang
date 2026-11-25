@@ -1,16 +1,3 @@
-/* ==============================================================================
- * 👤 PARTE DE SAMUEL (Turno 4 / Diapos 10 a 12 en Canva): TABLA DE SÍMBOLOS EN C
- * ==============================================================================
- * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
- *    1. Estructura 'Simbolo': lista enlazada con punteros 'cabeza' y 'cola' para
- *       mantener el orden exacto de primera aparición de cada identificador.
- *    2. Por qué es OBLIGATORIO usar strdup(nombre): porque el puntero 'yytext'
- *       de Flex es un buffer interno que se sobrescribe con el siguiente lexema.
- *    3. Cómo se evitan líneas duplicadas: comparando si 'linea' ya es igual a
- *       la última línea almacenada en el arreglo dinámico 'lineas' (y usando
- *       realloc si supera 'cap_lineas').
- *    4. Gestión de memoria: liberación ordenada con free() en tabla_liberar().
- * ============================================================================== */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,9 +17,7 @@ static Simbolo *cabeza = NULL;
 static Simbolo *cola = NULL;
 static int total_identificadores = 0;
 
-/* ==============================================================================
- * 👤 SAMUEL — FUNCIÓN 1: tabla_agregar
- * ============================================================================== */
+
 void tabla_agregar(const char *nombre, int linea) {
     /* 1. Buscar si el identificador ya fue registrado previamente */
     Simbolo *actual = cabeza;
@@ -70,9 +55,7 @@ void tabla_agregar(const char *nombre, int linea) {
     total_identificadores++;
 }
 
-/* ==============================================================================
- * 👤 SAMUEL — FUNCIÓN 2: tabla_imprimir
- * ============================================================================== */
+
 void tabla_imprimir(void) {
     printf("\nTABLA DE SÍMBOLOS (%d identificadores)\n", total_identificadores);
     Simbolo *actual = cabeza;
@@ -88,9 +71,7 @@ void tabla_imprimir(void) {
     }
 }
 
-/* ==============================================================================
- * 👤 SAMUEL — FUNCIÓN 3: tabla_liberar
- * ============================================================================== */
+
 void tabla_liberar(void) {
     Simbolo *actual = cabeza;
     while (actual != NULL) {
