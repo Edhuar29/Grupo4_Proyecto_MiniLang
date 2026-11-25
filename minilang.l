@@ -1,15 +1,5 @@
 /* ==============================================================================
- * 📄 minilang.l — ANALIZADOR LÉXICO COMPLETO DE MINILANG (FLEX Y C)
- * ==============================================================================
- * 👥 GUÍA DE EXPOSICIÓN Y DEFENSA POR INTEGRANTE (12 Diapositivas en Canva):
- *    - 👤 EDUARDO (Turno 1 / Diapos 1 a 3): Apertura, Pipeline del compilador,
- *      función main() con bucle yylex() hasta T_FIN, Makefile y pruebas/.
- *    - 👤 MELANY  (Turno 2 / Diapos 4 a 6): Definiciones regulares, tokens válidos,
- *      macro YY_USER_ACTION (línea/columna), ambigüedad y longest match.
- *    - 👤 ARIEL   (Turno 3 / Diapos 7 a 9): Taxonomía de errores E1 a E6, estado
- *      exclusivo <COMENT>, verificar_escapes_cadena() y modo pánico.
- *    - 👤 SAMUEL  (Turno 4 / Diapos 10 a 12): Integración con tabla_agregar(),
- *      tabla_imprimir(), tabla_liberar(), memoria strdup/free y Bison.
+ *  minilang.l — ANALIZADOR LÉXICO COMPLETO DE MINILANG (FLEX Y C)
  * ============================================================================== */
 %{
 #include <stdio.h>
@@ -18,40 +8,33 @@
 #include "tokens.h"
 #include "tabla.h"
 
-/* ==============================================================================
- * 👤 PARTE DE MELANY (Turno 2 / Diapos 4 a 6 en Canva): POSICIÓN Y EMISIÓN DE TOKENS
- * 📌 REVISAR: YY_USER_ACTION se ejecuta antes de cada regla. Guarda dónde inició
- *    el lexema actual (linea, col) y avanza sig_col (un tab cuenta como 1 col).
- * ============================================================================== */
+
 int linea = 1, col = 1;
 static int sig_linea = 1, sig_col = 1;
 int ntokens = 0, nerrores = 0;
 
+/* Actualiza la posición del analizador antes de cada regla. */
 #define YY_USER_ACTION { linea = sig_linea; col = sig_col;               \
     for (int i = 0; i < yyleng; i++)                                     \
         if (yytext[i] == '\n') { sig_linea++; sig_col = 1; }             \
         else sig_col++; }
 
-/* Imprime el token en formato 'línea:columna\tCLASE\tlexema' y devuelve su código */
+/* Imprime el token reconocido y devuelve su código correspondiente. */
 static int emitir_token(const char *tipo, int codigo) {
     printf("%d:%d\t%s\t%s\n", linea, col, tipo, yytext);
     ntokens++;
     return codigo;
 }
 
-/* ==============================================================================
- * 👤 PARTE DE ARIEL (Turno 3 / Diapos 7 a 9 en Canva): MANEJO DE ERRORES LÉXICOS (E1 A E6)
- * 📌 REVISAR: Cada función reporta el error con su posición exacta y el análisis
- *    continúa sin detenerse (modo pánico).
- * ============================================================================== */
-static int com_linea, com_col;        /* Línea y columna donde abrió el bloque */
+/* Almacena la posición inicial de un comentario de bloque. */
+static int com_linea, com_col;       
 
 static void emitir_error(const char *cod, const char *msg, int l, int c) {
     printf("%d:%d\tERROR %s\t%s\n", l, c, cod, msg);
     nerrores++;
 }
 
-/* Error E1 (Ariel): Carácter o byte no válido */
+/* Error E1 : Carácter o byte no válido */
 static void error_caracter(void) {
     char msg[64];
     unsigned char b = (unsigned char) yytext[0];
@@ -60,14 +43,14 @@ static void error_caracter(void) {
     emitir_error("E1", msg, linea, col);
 }
 
-/* Error E4 (Ariel): Número mal formado (ej. 2dias, 1.2.3, 7e) */
+/* Error E4: Número mal formado (ej. 2dias, 1.2.3, 7e) */
 static void error_numero(void) {
     char msg[160];
     snprintf(msg, sizeof msg, "número mal formado '%.120s'", yytext);
     emitir_error("E4", msg, linea, col);
 }
 
-/* Error E6 (Ariel): Secuencia de escape no válida en una cadena (ej. "hola\q")
+/* Error E6: Secuencia de escape no válida en una cadena (ej. "hola\q")
  * Recorre yytext buscando el primer '\' seguido de algo distinto a n, t, ", \
  * y calcula la columna exacta de esa barra invertida (col + i). */
 static int verificar_escapes_cadena(void) {
@@ -90,11 +73,7 @@ static int verificar_escapes_cadena(void) {
 %option noyywrap nounput noinput
 %x COMENT
 
-/* ==============================================================================
- * 👤 PARTE DE MELANY Y ARIEL: DEFINICIONES REGULARES CON NOMBRE
- * 📌 REVISAR: Por qué REAL exige dígitos antes y después del punto (no .5 ni 4.)
- *    y cómo ID_INVALIDO detecta 32 o más caracteres (1 letra/_ + >=31 más).
- * ============================================================================== */
+
 DIG         [0-9]
 LETRA       [A-Za-z_]
 ID          {LETRA}({LETRA}|{DIG})*
@@ -103,9 +82,7 @@ REAL        {DIG}+"."{DIG}+([eE][+-]?{DIG}+)?|{DIG}+[eE][+-]?{DIG}+
 
 %%
 
-    /* =========================================================================
-     * 👤 MELANY (espacios/comentarios válidos) & ARIEL (Error E3 en EOF)
-     * ========================================================================= */
+
 [ \t\r\n]+              { /* Espacios y tabuladores: se descartan */ }
 "//".*                  { /* Comentario de línea: se descarta hasta \n */ }
 
@@ -118,23 +95,15 @@ REAL        {DIG}+"."{DIG}+([eE][+-]?{DIG}+)?|{DIG}+[eE][+-]?{DIG}+
                           BEGIN(INITIAL);
                         }
 
-    /* =========================================================================
-     * 👤 PARTE DE ARIEL (Estudiante 2): ERROR E5 (IDENTIFICADOR > 31 CARACTERES)
-     * 📌 REVISAR: Va ANTES de {ID} por prioridad en caso de empate; se descarta
-     *    y NO se inserta en la tabla de símbolos de Samuel.
-     * ========================================================================= */
+
 {ID_INVALIDO}           { emitir_error("E5", "identificador de más de 31 caracteres", linea, col); }
 
-    /* =========================================================================
-     * 👤 PARTE DE MELANY (Estudiante 1): TOKENS VÁLIDOS DE MINILANG
-     * 📌 REVISAR: Orden de palabras reservadas ANTES de {ID} para que 'entero' o
-     *    'si' no sean clasificados como IDENTIFICADOR.
-     * ========================================================================= */
+   
 entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|verdadero|falso {
                           return emitir_token("PALABRA_RESERVADA", T_RESERVADA); }
 
 {ID}                    {
-                          /* Conexión con el módulo de Samuel (tabla.c) */
+                          /* Registra el identificador y la línea donde aparece. */
                           tabla_agregar(yytext, linea);
                           return emitir_token("IDENTIFICADOR", T_IDENTIFICADOR);
                         }
@@ -142,19 +111,10 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
 {REAL}                  { return emitir_token("REAL", T_REAL); }
 {DIG}+                  { return emitir_token("ENTERO", T_ENTERO); }
 
-    /* =========================================================================
-     * 👤 PARTE DE ARIEL (Estudiante 2): ERROR E4 (NÚMERO MAL FORMADO)
-     * 📌 REVISAR: Va DESPUÉS de {REAL} y {DIG}+. Por máximo bocado (longest match),
-     *    '10' coincide con {DIG}+, pero '2dias' o '1.2.3' coinciden aquí por ser más largos.
-     * ========================================================================= */
+/* Detecta números seguidos de caracteres no permitidos. */
 ({REAL}|{DIG}+)[A-Za-z0-9_.]+ { error_numero(); }
 
-    /* =========================================================================
-     * 👤 PARTE DE MELANY (Cadenas válidas) Y ARIEL (Errores E6 y E2)
-     * 📌 REVISAR: La cadena cerrada pasa por verificar_escapes_cadena() (E6);
-     *    si no tiene escapes inválidos, Melany emite CADENA. Si falta comilla
-     *    de cierre antes del salto de línea, entra a E2.
-     * ========================================================================= */
+
 \"(\\[^\n]|[^"\\\n])*\" {
                           if (!verificar_escapes_cadena()) {
                               return emitir_token("CADENA", T_CADENA);
@@ -163,27 +123,24 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
 
 \"(\\[^\n]|[^"\\\n])*\\?   { emitir_error("E2", "cadena sin cerrar", linea, col); }
 
-    /* Operadores y delimitadores (Melany) */
+    /* Operadores y delimitadores */
 "=="|"!="|"<="|">="|"<"|">"  { return emitir_token("OP_RELACIONAL", T_OP_RELACIONAL); }
 "&&"|"||"|"!"                { return emitir_token("OP_LOGICO", T_OP_LOGICO); }
 "="                          { return emitir_token("ASIGNACION", T_ASIGNACION); }
 [-+*/%]                      { return emitir_token("OP_ARITMETICO", T_OP_ARITMETICO); }
 [(){}\[\];,]               { return emitir_token("DELIMITADOR", T_DELIMITADOR); }
 
-    /* Error E1 (Ariel): Regla comodín al final para cualquier carácter no válido */
+    /* Detecta caracteres que no pertenecen al lenguaje. */
 .                       { error_caracter(); }
 
-    /* Fin de archivo (Melany / Eduardo) */
 <<EOF>>                 { printf("%d:%d\tFIN\t\n", sig_linea, sig_col); return T_FIN; }
 
 %%
 
-/* ==============================================================================
- * 👤 PARTE DE EDUARDO (Turno 1 / Diapos 1 a 3 en Canva): DRIVER / FUNCIÓN MAIN
- * 📌 REVISAR: Abre el archivo recibido por argv[1], ejecuta el bucle yylex()
- *    hasta recibir T_FIN (0), imprime la tabla de símbolos de Samuel, muestra el
- *    resumen de tokens/errores y libera memoria.
- * ============================================================================== */
+/*
+ * Función principal: abre el archivo de entrada, ejecuta el analizador,
+ * imprime la tabla de símbolos y el resumen de resultados.
+ */
 int main(int argc, char *argv[]) {
     if (argc > 1 && !(yyin = fopen(argv[1], "r"))) {
         perror(argv[1]);
