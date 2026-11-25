@@ -1,11 +1,3 @@
-/* ==============================================================================
- * 👤 PARTE DE SAMUEL (Turno 4 / Diapos 10 a 12 en Canva): TABLA DE SÍMBOLOS
- * ==============================================================================
- * 📌 QUÉ DEBES REVISAR Y SABER EXPLICAR AQUÍ (Defensa Semana 8):
- *    1. Cómo este archivo .h expone las funciones públicas hacia 'minilang.l'.
- *    2. En qué momento se invoca cada función: tabla_agregar() al leer un ID,
- *       tabla_imprimir() al terminar el archivo y tabla_liberar() antes de salir.
- * ============================================================================== */
 #ifndef TABLA_H
 #define TABLA_H
 
