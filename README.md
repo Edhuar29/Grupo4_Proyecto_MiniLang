@@ -1,86 +1,34 @@
-# Proyecto del I Bimestre · Analizador Léxico de MiniLang en Flex y C
+# Analizador Léxico de MiniLang (Flex y C)
 
-**Materia:** Compiladores y Lenguajes (ICCD422) — GR2CC_2026-2  
-**Institución:** Escuela Politécnica Nacional (EPN)  
-**Grupo:** Grupo 4  
-
----
-
-## Recursos y Materiales de Apoyo del Proyecto
-
-* **Presentación en Canva (12 Diapositivas - 3 por estudiante):** [Ver Diapositivas de Defensa](https://www.canva.com/design/DAHa88W7uzI/edit)
-* **Guión Oficial de Exposición (Google Docs):** [Leer Guión Palabra por Palabra](https://docs.google.com/document/d/1Y3xt003-X5NvTvQZwul5GDhisgmIkkZtzn-hjBSknDw/edit)
-* **Informe Oficial del Proyecto (Google Docs):** [Ver Informe Grupo 4](https://docs.google.com/document/d/1MwygHaZj3BRnsjDs1bmyOIKT-T-j6l0fYGmKCIdbWRM/edit)
+**Escuela Politécnica Nacional (EPN)**  
+**Asignatura:** Compiladores y Lenguajes (ICCD422) — GR2CC (2026-2)  
+**Docente:** Ing. Henry Recalde, MSc.  
+**Grupo 4:**
+* Danny Anasi
+* Melany Taco
+* Ariel Soria
+* Samuel Robayo
 
 ---
 
-## Integrantes, Turnos y Responsabilidades (Defensa Semana 8)
+## Descripción del Proyecto
 
-| Turno / Diapositivas | Integrante | Rol | Responsabilidad Principal en Código |
-| :---: | :--- | :--- | :--- |
-| **Turno 1**<br>*(Diapos 1 a 3)* | **Danny Anasi** | Automatización, QA & Driver | Configuración de `Makefile`, suite de 4 programas en `pruebas/`, salidas de referencia en `esperadas/`, función `main()`, verificación con `diff` y documentación. |
-| **Turno 2**<br>*(Diapos 4 a 6)* | **Melany Taco** | Léxico Core & Tokens | Expresiones regulares de tokens válidos, tipos numéricos (`ENTERO`, `REAL`), palabras reservadas, operadores, delimitadores, interfaz con `tokens.h` y macro `YY_USER_ACTION`. |
-| **Turno 3**<br>*(Diapos 7 a 9)* | **Ariel Soria** | Errores Léxicos & Modo Pánico | Detección y recuperación en modo pánico de errores E1 a E6 (especialmente E5 > 31 chars y E6 escapes inválidos en cadenas con posición del `\`), y estado `%x COMENT`. |
-| **Turno 4**<br>*(Diapos 10 a 12)* | **Samuel Robayo** | Tabla de Símbolos en C | Implementación en `tabla.c` y `tabla.h`, registro dinámico con `strdup()`, lista ordenada de líneas de aparición sin duplicados (`realloc`) y liberación total con `free()`. |
+Implementación de un analizador léxico autónomo para el lenguaje **MiniLang**, desarrollado en **Flex** y **C**. El escáner lee código fuente, descarta espacios y comentarios, agrupa lexemas en 10 clases de tokens compatibles con Bison (`258`–`267` y `0` para `EOF`), registra identificadores únicos con sus líneas de aparición en una tabla de símbolos dinámica y realiza recuperación de errores léxicos en **modo pánico** (`E1` a `E6`).
 
 ---
 
-## Cómo compilar y ejecutar
+## Estructura del Repositorio
 
-### Requisitos previos
-* `gcc` (compilador de C)
-* `flex` (generador de analizadores léxicos)
-* `make` (herramienta de automatización)
-
-### Comandos de compilación
-```bash
-# Compilar el ejecutable minilang
-make
-
-# Ejecutar un programa de prueba individual
-./minilang pruebas/p1_correcto.ml
-
-# Ejecutar toda la batería de pruebas automatizada
-make pruebas
-
-# Limpiar archivos temporales y ejecutables generados
-make limpiar
-```
-
----
-
-## Batería de Pruebas
-
-| Archivo de Prueba | Categoría | Descripción y Casos Cubiertos |
-| :--- | :--- | :--- |
-| `pruebas/p1_correcto.ml` | Programa Válido | Cobertura total de palabras reservadas, operadores, enteros, reales, comentarios y tabla de símbolos sin errores. |
-| `pruebas/p2_errores_e1_e3.ml` | Errores Sintácticos Tempranos | Cobertura de caracteres inválidos (E1), cadenas sin cerrar en fin de línea (E2) y bloque `/* ... */` sin cerrar al EOF (E3). |
-| `pruebas/p3_errores_e4_e6.ml` | Errores Complejos | Cobertura de números mal formados (E4), identificadores > 31 caracteres (E5) y secuencias de escape inválidas (E6). |
-| `pruebas/p4_casos_limite.ml` | Casos Borde | Identificador de exactamente 31 caracteres vs 32, escapes válidos múltiples (`\n`, `\t`, `\"`, `\\`), comentarios dentro de cadenas, reales con exponente. |
-
----
-
-## Decisiones de Diseño Técnico
-
-1. **Orden de Reglas en Flex:**
-   * Las reglas de error de mayor longitud (como `ID_INVALIDO` de más de 31 caracteres) preceden a la regla general `{ID}` para que Flex aplique la precedencia de regla superior ante igual longitud.
-   * Las palabras reservadas preceden a `{ID}` para evitar que sean absorbidas como identificadores.
-2. **Estrategia del Modo Pánico:**
-   * Ningún error detiene el análisis (`exit`), permitiendo diagnosticar la totalidad de incidencias del código fuente de una sola pasada.
-3. **Gestión de Memoria en la Tabla de Símbolos:**
-   * Se utiliza `strdup()` para asegurar que cada identificador conserve su cadena propia antes de que el buffer `yytext` de Flex sea reutilizado por el siguiente lexema.
-
----
-
-## Guía de Revisión por Integrante y Turno de Defensa (12 Diapositivas)
-
-Cada archivo fuente tiene marcada con el nombre correspondiente la sección exacta que debe dominar y defender cada integrante según su orden en la presentación:
-
-* **1. Eduardo (Turno 1 / Diapositivas 1 a 3 en Canva — `Makefile`, `minilang.l` `main()`, `pruebas/` y `esperadas/`):**
-  * Revisar el bucle `while ((tok = yylex()) != T_FIN)` en `main()`, las reglas de compilación del `Makefile`, los 4 programas en `pruebas/` y la verificación automatizada con `make pruebas` (0 diferencias).
-* **2. Melany (Turno 2 / Diapositivas 4 a 6 en Canva — `tokens.h` y `minilang.l` Tokens Válidos):**
-  * Revisar las definiciones regulares (`DIG`, `LETRA`, `ID`, `REAL`), el macro `YY_USER_ACTION` para `linea`/`col`, la función `emitir_token()` y el orden de palabras reservadas antes de `{ID}` (*longest match*).
-* **3. Ariel (Turno 3 / Diapositivas 7 a 9 en Canva — `minilang.l` Errores E1 a E6 y Modo Pánico):**
-  * Revisar la condición de inicio `%x COMENT` (E3), `{ID_INVALIDO}` antes de `{ID}` (E5), la regla de número mal formado (E4), `verificar_escapes_cadena()` con `col + i` (E6), cadena sin cerrar (E2) y `error_caracter()` (E1).
-* **4. Samuel (Turno 4 / Diapositivas 10 a 12 en Canva — `tabla.h` y `tabla.c` Tabla de Símbolos):**
-  * Revisar la estructura `struct Simbolo`, la lista enlazada con `cabeza`/`cola` (orden cronológico), la copia con `strdup()`, la inserción sin líneas repetidas (`realloc`), `tabla_liberar()` con `free()` y la interfaz hacia Bison.
+```text
+Grupo4_Proyecto_MiniLang/
+├── minilang.l          # Especificación léxica en Flex (reglas, errores, posición y main)
+├── tokens.h            # Definición del enum de códigos de token (compatible con Bison)
+├── tabla.h             # Interfaz pública de la tabla de símbolos
+├── tabla.c             # Implementación de la tabla de símbolos (lista enlazada O(1))
+├── Makefile            # Automatización de compilación, pruebas con diff y limpieza
+├── pruebas/            # Programas fuente MiniLang (.ml) para validación
+│   ├── p1_correcto.ml
+│   ├── p2_errores_e1_e3.ml
+│   ├── p3_errores_e4_e6.ml
+│   └── p4_casos_limite.ml
+└── esperadas/          # Salidas de referencia (.txt) para comparación automática
