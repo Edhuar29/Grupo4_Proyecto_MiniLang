@@ -34,7 +34,7 @@ static void emitir_error(const char *cod, const char *msg, int l, int c) {
     nerrores++;
 }
 
-/* Error E1 : Carácter o byte no válido */
+/* Detecta caracteres que no pertenecen al lenguaje. */
 static void error_caracter(void) {
     char msg[64];
     unsigned char b = (unsigned char) yytext[0];
@@ -43,16 +43,18 @@ static void error_caracter(void) {
     emitir_error("E1", msg, linea, col);
 }
 
-/* Error E4: Número mal formado (ej. 2dias, 1.2.3, 7e) */
+/* Detecta números mal formados. */
 static void error_numero(void) {
     char msg[160];
     snprintf(msg, sizeof msg, "número mal formado '%.120s'", yytext);
     emitir_error("E4", msg, linea, col);
 }
 
-/* Error E6: Secuencia de escape no válida en una cadena (ej. "hola\q")
- * Recorre yytext buscando el primer '\' seguido de algo distinto a n, t, ", \
- * y calcula la columna exacta de esa barra invertida (col + i). */
+/*
+ * Verifica las secuencias de escape de una cadena.
+ * Los escapes permitidos son: \n, \t, \" y \\.
+ * Devuelve 1 si encuentra un escape inválido.
+ */
 static int verificar_escapes_cadena(void) {
     for (int i = 0; i < yyleng; i++) {
         if (yytext[i] == '\\') {
@@ -149,7 +151,7 @@ int main(int argc, char *argv[]) {
 
     int tok;
     while ((tok = yylex()) != T_FIN) {
-        /* En Semana 12 Bison llamará a yylex() y usará 'tok' */
+        /* El analizador continúa hasta el fin del archivo. */
     }
 
     tabla_imprimir();
