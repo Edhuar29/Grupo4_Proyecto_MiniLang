@@ -113,7 +113,7 @@ entero|real|cadena|logico|si|sino|mientras|para|funcion|retornar|imprimir|leer|v
 {REAL}                  { return emitir_token("REAL", T_REAL); }
 {DIG}+                  { return emitir_token("ENTERO", T_ENTERO); }
 
-/* Detecta números seguidos de caracteres no permitidos. */
+    /* Detecta números seguidos de caracteres no permitidos. */
 ({REAL}|{DIG}+)[A-Za-z0-9_.]+ { error_numero(); }
 
 
