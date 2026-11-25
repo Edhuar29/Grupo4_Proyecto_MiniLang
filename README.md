@@ -6,15 +6,15 @@
 
 ---
 
-## 🔗 Recursos y Materiales de Apoyo del Proyecto
+## Recursos y Materiales de Apoyo del Proyecto
 
-* 📊 **Presentación en Canva (12 Diapositivas - 3 por estudiante):** [Ver Diapositivas de Defensa](https://www.canva.com/design/DAHa88W7uzI/edit)
-* 📜 **Guión Oficial de Exposición (Google Docs):** [Leer Guión Palabra por Palabra](https://docs.google.com/document/d/1Y3xt003-X5NvTvQZwul5GDhisgmIkkZtzn-hjBSknDw/edit)
-* 📝 **Informe Oficial del Proyecto (Google Docs):** [Ver Informe Grupo 4](https://docs.google.com/document/d/1MwygHaZj3BRnsjDs1bmyOIKT-T-j6l0fYGmKCIdbWRM/edit)
+* **Presentación en Canva (12 Diapositivas - 3 por estudiante):** [Ver Diapositivas de Defensa](https://www.canva.com/design/DAHa88W7uzI/edit)
+* **Guión Oficial de Exposición (Google Docs):** [Leer Guión Palabra por Palabra](https://docs.google.com/document/d/1Y3xt003-X5NvTvQZwul5GDhisgmIkkZtzn-hjBSknDw/edit)
+* **Informe Oficial del Proyecto (Google Docs):** [Ver Informe Grupo 4](https://docs.google.com/document/d/1MwygHaZj3BRnsjDs1bmyOIKT-T-j6l0fYGmKCIdbWRM/edit)
 
 ---
 
-## 👥 Integrantes, Turnos y Responsabilidades (Defensa Semana 8)
+## Integrantes, Turnos y Responsabilidades (Defensa Semana 8)
 
 | Turno / Diapositivas | Integrante | Rol | Responsabilidad Principal en Código |
 | :---: | :--- | :--- | :--- |
@@ -25,7 +25,7 @@
 
 ---
 
-## 🚀 Cómo compilar y ejecutar
+## Cómo compilar y ejecutar
 
 ### Requisitos previos
 * `gcc` (compilador de C)
@@ -49,7 +49,7 @@ make limpiar
 
 ---
 
-## 🧪 Batería de Pruebas
+## Batería de Pruebas
 
 | Archivo de Prueba | Categoría | Descripción y Casos Cubiertos |
 | :--- | :--- | :--- |
@@ -60,7 +60,7 @@ make limpiar
 
 ---
 
-## 🛠️ Decisiones de Diseño Técnico
+## Decisiones de Diseño Técnico
 
 1. **Orden de Reglas en Flex:**
    * Las reglas de error de mayor longitud (como `ID_INVALIDO` de más de 31 caracteres) preceden a la regla general `{ID}` para que Flex aplique la precedencia de regla superior ante igual longitud.
@@ -72,7 +72,7 @@ make limpiar
 
 ---
 
-## 🔍 Guía de Revisión por Integrante y Turno de Defensa (12 Diapositivas)
+## Guía de Revisión por Integrante y Turno de Defensa (12 Diapositivas)
 
 Cada archivo fuente tiene marcada con el nombre correspondiente la sección exacta que debe dominar y defender cada integrante según su orden en la presentación:
 
